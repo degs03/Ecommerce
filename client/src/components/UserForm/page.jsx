@@ -2,6 +2,7 @@
 import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import "@fontsource/montserrat";
 import styles from "./page.module.css";
 import FormWrapper from "../FormWrapper/page";
 const { useState, useEffect } = require("react")
@@ -77,7 +78,7 @@ const UserForm = ({ onSubmit, preset = {}, isSignUp }) => { //preset trae data
     }, [error]);
 
     return (
-        <FormWrapper>
+        <FormWrapper >
             <Typography component="h1" variant="h5" color="#4b3a2e">
                 {isSignUp == true ? ('Registrate') : ('Iniciar sesión')}
             </Typography>
@@ -254,11 +255,7 @@ const UserForm = ({ onSubmit, preset = {}, isSignUp }) => { //preset trae data
                             fullWidth
                             variant="contained"
                             sx={{
-                                mb: 3,
-                                backgroundColor: "#8a6c54",
-                                '&:hover': {
-                                    backgroundColor: "#6b5543",
-                                }
+                                mb: 3
                             }}
                             onClick={handleFormSubmit}
                         >
@@ -270,29 +267,29 @@ const UserForm = ({ onSubmit, preset = {}, isSignUp }) => { //preset trae data
                     <Grid item>
                         {isSignUp ?
                             (
-                                <Link href="/login" variant="body2" className={styles.link}>
-                                    Ya tienes una cuenta? Inicia sesion.
-                                </Link>
-                            ) :
-                            (
-                                <Grid item spacing={2} textAlign="right">
-                                    <Grid Grid item xs={12} sm={12}>
-                                        <Link href="/register" variant="body2" className={styles.link}>
-                                            Aun no tienes una cuenta? Registrate.
-                                        </Link>
-                                    </Grid>
-                                    <Grid Grid item xs={12} sm={12} mt={2}>
-                                        <Link href="/passwordReset" variant="body2" className={styles.link}>
-                                            Olvidaste tu contraseña?
-                                        </Link>
-                                    </Grid>
-                                </Grid>
-
-                            )
-                        }
+                                <Link href="/login" variant="body2" >
+                        Ya tienes una cuenta? Inicia sesion.
+                    </Link>
+                    ) :
+                    (
+                    <Grid item spacing={2} textAlign="right">
+                        <Grid Grid item xs={12} sm={12}>
+                            <Link href="/register" variant="body2" >
+                                Aun no tienes una cuenta? Registrate.
+                            </Link>
+                        </Grid>
+                        <Grid Grid item xs={12} sm={12} mt={2}>
+                            <Link href="/passwordReset" variant="body2" >
+                                Olvidaste tu contraseña?
+                            </Link>
+                        </Grid>
                     </Grid>
+
+                    )
+                        }
                 </Grid>
-            </Box>
+            </Grid>
+        </Box>
         </FormWrapper >
     )
 }

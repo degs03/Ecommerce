@@ -1,7 +1,9 @@
 'use client'
 
 import UserForm from "@/components/UserForm/page";
+import { Grid } from "@mui/material";
 import axios from "axios";
+import Image from "next/image";
 import Swal from 'sweetalert2';
 
 const { Fragment } = require("react")
@@ -31,7 +33,9 @@ const Register = () => {
     }
     return (
         <Fragment>
-            <UserForm isSignUp={true} onSubmit={createNewUser} />
+            <Grid item height={'100vh'}>
+                <UserForm isSignUp={true} onSubmit={createNewUser} />
+            </Grid>
         </Fragment>
     )
 }

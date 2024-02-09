@@ -1,5 +1,4 @@
 import { Fragment } from "react";
-import Image from "next/image";
 import { Avatar, Box, Container, Typography } from "@mui/material";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Link from "next/link";
@@ -14,8 +13,6 @@ const FormWrapper = ({ children }) => {
                     href="/"
                     style={{
                         textDecoration: 'none',
-                        boxShadow: 'none',
-                        color: '#c23502'
                     }}>
                     FindYourPet
                 </Link>{' '}
