@@ -266,23 +266,23 @@ const UserForm = ({ onSubmit, preset = {}, isSignUp }) => { //preset trae data
                         </Button>
                     </Grid>
                 </Grid>
-                <Grid container justifyContent="flex-end">
+                <Grid container justifyContent="flex-end" >
                     <Grid item>
                         {isSignUp ?
                             (
-                                <Link href="/account/login" variant="body2" className={styles.link}>
+                                <Link href="/login" variant="body2" className={styles.link}>
                                     Ya tienes una cuenta? Inicia sesion.
                                 </Link>
                             ) :
                             (
-                                <Grid container justifyContent="flex-end">
-                                    <Grid item>
-                                        <Link href="/account/register" variant="body2" className={styles.link}>
+                                <Grid item spacing={2} textAlign="right">
+                                    <Grid Grid item xs={12} sm={12}>
+                                        <Link href="/register" variant="body2" className={styles.link}>
                                             Aun no tienes una cuenta? Registrate.
                                         </Link>
                                     </Grid>
-                                    <Grid item sx={{ mt: 2 }}>
-                                        <Link href="/account/forgotPassword" variant="body2" className={styles.link}>
+                                    <Grid Grid item xs={12} sm={12} mt={2}>
+                                        <Link href="/passwordReset" variant="body2" className={styles.link}>
                                             Olvidaste tu contraseña?
                                         </Link>
                                     </Grid>

@@ -2,42 +2,39 @@ const nodemailer = require("nodemailer");
 const handlebars = require("handlebars");
 const fs = require("fs/promises");
 
-const sendEmail = async (options) => {
-    try {
-        // Create a transporter
-        const transporter = nodemailer.createTransport({
-            host: 'smtp.gmail.com',
-            port: 587,
-            secure: false,
-            auth: {
-                user: process.env.USER,
-                pass: process.env.PASS
-            },
-        });
+const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    auth: {
+        user: process.env.USER,
+        pass: process.env.PASS
 
-        // lee el archivo que contiene el template
-        const templateFile = await fs.readFile("./view/email.hbs", "utf-8");
-        const template = handlebars.compile(templateFile);
+    },
+});
 
-        // compila el template con las opciones que se le dieron
-        const html = template(options);
+module.exports.sendPasswordToken = ({ user, token }) => {
 
-        const emailOptions = {
-            from: 'FindYourPet',
-            to: options.email,
-            subject: options.subject,
-            text: options.message,
-            html: html //Aqui se manda el template
-        };
+    return new Promise(async (resolve, reject) => {
+        try {
+            const options = { ...user };
+            options.token = token;
+            const templateFile = await fs.readFile("./view/email.hbs", "utf-8");
+            const template = handlebars.compile(templateFile);
+            const html = template(options);
 
-        // Send the email
-        await transporter.sendMail(emailOptions);
+            const info = await transporter.sendMail({
+                from: '"Not Reply Proyecto Uno" <nribero@codingdojo.la>', // sender address
+                to: user.email, // list of receivers
+                subject: "Password Reset", // Subject line
+                text: "Password Reset", // plain text body
+                html: html, // html body
+            });
+            resolve(info);
+        } catch (error) {
+            console.log(error);
+            reject(error);
+        }
+    });
+}
 
-        console.log("El Email se ha enviado correctamente");
-    } catch (error) {
-        console.error("Error al enviar el correo:", error);
-        throw error;
-    }
-};
-
-module.exports = sendEmail;

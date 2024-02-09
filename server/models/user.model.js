@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
-const crypto = require("crypto");
 
 const UserSchema = new mongoose.Schema({
 
@@ -65,19 +64,59 @@ UserSchema.pre('save', function (next) {
         });
 });
 
-UserSchema.methods.createResetPasswordToken = function () {
+/* UserSchema.methods.createResetPasswordToken = function () {
     const resetToken = crypto.randomBytes(32).toString('hex');//los bytes a utilizar y convierte a string en hexadecimal
-    /* 
-    En este caso se especifica el algoritmo a usar que es el sha256, se especifica que campo queremos encriptar
-    Y el digest nos especifica en que formato queremos encriptar, el formato utilizado es el 'hex' o el hexadesimal    
-    */
+    
+    //En este caso se especifica el algoritmo a usar que es el sha256, se especifica que campo queremos encriptar
+    //Y el digest nos especifica en que formato queremos encriptar, el formato utilizado es el 'hex' o el hexadesimal    
+    
     this.passwordResetToken = crypto.createHash('sha256').update(resetToken).digest('hex')
     this.passwordResetTokenExpire = Date.now() + 10 * 60 * 1000; // tiempo a expirar, 10 minutos
 
     console.log(resetToken, this.passwordResetToken);
 
     return resetToken;
-}
+} */
+/* 
+// 1. Este es un middleware de Mongoose que se ejecuta antes de la operación "findOneAndUpdate".
+//    "findOneAndUpdate" es una operación de Mongoose que busca un documento por su ID y lo actualiza con los datos proporcionados.
+UserSchema.pre(["findOneAndUpdate"], async function (next) {
+    // Este es un middleware de Mongoose que se ejecuta antes de la operación "findOneAndUpdate".
+    // "findOneAndUpdate" es una operación de Mongoose que busca un documento por su ID y lo actualiza con los datos proporcionados.
+    const data = this.getUpdate();
+    // "this.getUpdate()" obtiene los datos que se van a actualizar en la operación "findOneAndUpdate".
+    if (data.password) {
+        //Si los datos de actualización incluyen una contraseña, entonces se ejecuta el siguiente bloque de código.
+        try {
+            const salt = await bcrypt.genSalt(10);
+            //Genera una "sal" utilizando bcrypt. La "sal" es un conjunto de datos aleatorios que se utilizan como entrada adicional para la función de hash.
+            const hash = await bcrypt.hash(data.password, salt);
+            // Crea un hash de la contraseña proporcionada utilizando la "sal" generada. 
+            //Asegura que la contraseña almacenada en la base de datos no sea la contraseña en texto plano, sino su versión hasheada.
+            data.password = hash;
+            //Actualiza la contraseña en los datos de actualización con la versión hasheada de la contraseña.
+            next();
+        } catch (error) {
+            next(error);
+        }
+    }
+    next();
+}); */
+
+UserSchema.pre(["findOneAndUpdate"], async function (next) {
+    const data = this.getUpdate();
+    if (data.password) {
+        try {
+            const salt = await bcrypt.genSalt(10);
+            const hash = await bcrypt.hash(data.password, salt);
+            data.password = hash;
+            next();
+        } catch (error) {
+            next(error);
+        }
+    }
+    next();
+});
 
 
 const User = new mongoose.model("User", UserSchema);
