@@ -1,5 +1,5 @@
 'use client'
-import { Box, Button, Grid, TextField, Typography } from "@mui/material";
+import { Box, Button, CssBaseline, Grid, TextField, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import "@fontsource/montserrat";
@@ -76,221 +76,208 @@ const UserForm = ({ onSubmit, preset = {}, isSignUp }) => { //preset trae data
             confirmPassword: error.confirmPassword ? error.confirmPassword.message : "",
         }));
     }, [error]);
-
+    const sty = {
+        color:'#FFFF',
+        '& label.Mui-focused': {
+            color: '#fff',
+            borderColor: '#fff'
+        },
+        '& .MuiOutlinedInput-root': {
+            '&.Mui-focused fieldset': {
+                color: '#fff',
+                borderColor: '#fff'
+            }
+        },
+        "& .MuiOutlinedInput-notchedOutline": {
+            borderColor: "#fff",
+        },
+        borderRadius: '20px'
+    };
     return (
-        <FormWrapper >
-            <Typography component="h1" variant="h5" color="#4b3a2e">
-                {isSignUp == true ? ('Registrate') : ('Iniciar sesión')}
-            </Typography>
-            <Box component="form" noValidate sx={{ mt: 3 }}>{/*mt = margin bottom */}
-                <Grid container spacing={2}>
-                    <Grid item xs={6} sm={6}>
-                        {isSignUp == true ? (
-                            <TextField
-                                required
-                                InputProps={{ className: styles.input }}
-                                sx={{
-                                    '& label.Mui-focused': {
-                                        color: '#4b3a2e'
-                                    },
-                                    '& .MuiOutlinedInput-root': {
-                                        '&.Mui-focused fieldset': {
-                                            borderColor: '#4b3a2e'
-                                        }
-                                    }
-                                }}
-                                name="firstName"
-                                label="First Name"
-                                fullWidth
-                                value={firstName}
-                                onChange={(e) => {
-                                    setFirstName(e.target.value);
-                                    setFormErrors((prevErrors) => ({ ...prevErrors, firstName: "" }));
-                                }}
-                                error={formErrors.firstName ? true : false}
-                                helperText={formErrors.firstName}
-                            />) : null}
-                    </Grid>
-                    <Grid item xs={6} sm={6} >
-                        {isSignUp == true ? (
-                            <TextField
-                                required
-                                InputProps={{ className: styles.input }}
-                                sx={{
-                                    '& label.Mui-focused': {
-                                        color: '#4b3a2e'
-                                    },
-                                    '& .MuiOutlinedInput-root': {
-                                        '&.Mui-focused fieldset': {
-                                            borderColor: '#4b3a2e'
-                                        }
-                                    }
-                                }}
-                                name="lastName"
-                                label="Last Name"
-                                fullWidth
-                                value={lastName}
-                                onChange={(e) => {
-                                    setLastName(e.target.value);
-                                    setFormErrors((prevErrors) => ({ ...prevErrors, lastName: "" }));
-                                }}
-                                error={formErrors.lastName ? true : false}
-                                helperText={formErrors.lastName}
-                            />) : null}
-                    </Grid>
-                    <Grid item xs={12} >
-                        <TextField
-                            required
-                            InputProps={{ className: styles.input }}
-                            sx={{
-                                '& label.Mui-focused': {
-                                    color: '#4b3a2e'
-                                },
-                                '& .MuiOutlinedInput-root': {
-                                    '&.Mui-focused fieldset': {
-                                        borderColor: '#4b3a2e'
-                                    }
-                                }
-                            }}
-                            name="email"
-                            label="E-mail"
-                            fullWidth
-                            value={email}
-                            onChange={(e) => {
-                                setEmail(e.target.value);
-                                setFormErrors((prevErrors) => ({ ...prevErrors, email: "" }));
-                            }}
-                            error={formErrors.email ? true : false}
-                            helperText={formErrors.email}
-                        />
-                    </Grid>
-                    {isSignUp == true ? (
+        <Grid item>
+            <FormWrapper >
+                <Typography component="h1" variant="h5" color="#fff">
+                    {isSignUp == true ? ('Registrate') : ('Iniciar sesión')}
+                </Typography>
+                <Box component="form" noValidate sx={{ mt: 3 }}>{/*mt = margin top */}
+                    <Grid container spacing={2} >
+                        <Grid item xs={6} sm={6}>
+                            {isSignUp == true ? (
+                                <TextField
+                                    required
+                                    InputProps={{ className: styles.input }}
+                                    InputLabelProps={{
+                                        style: { color: '#fff' } // Cambia el color del placeholder aquí
+                                    }}
+                                    sx={sty}
+                                    name="firstName"
+                                    label="First Name"
+                                    fullWidth
+                                    value={firstName}
+                                    onChange={(e) => {
+                                        setFirstName(e.target.value);
+                                        setFormErrors((prevErrors) => ({ ...prevErrors, firstName: "" }));
+                                    }}
+                                    error={formErrors.firstName ? true : false}
+                                    helperText={formErrors.firstName}
+                                />) : null}
+                        </Grid>
                         <Grid item xs={6} sm={6} >
+                            {isSignUp == true ? (
+                                <TextField
+                                    required
+                                    InputProps={{ className: styles.input }}
+                                    InputLabelProps={{
+                                        style: { color: '#fff' } // Cambia el color del placeholder aquí
+                                    }}
+                                    sx={sty}
+                                    name="lastName"
+                                    label="Last Name"
+                                    fullWidth
+                                    value={lastName}
+                                    onChange={(e) => {
+                                        setLastName(e.target.value);
+                                        setFormErrors((prevErrors) => ({ ...prevErrors, lastName: "" }));
+                                    }}
+                                    error={formErrors.lastName ? true : false}
+                                    helperText={formErrors.lastName}
+                                />) : null}
+                        </Grid>
+                        <Grid item xs={12} >
                             <TextField
                                 required
                                 InputProps={{ className: styles.input }}
-                                sx={{
-                                    '& label.Mui-focused': {
-                                        color: '#4b3a2e'
-                                    },
-                                    '& .MuiOutlinedInput-root': {
-                                        '&.Mui-focused fieldset': {
-                                            borderColor: '#4b3a2e'
-                                        }
-                                    }
+                                InputLabelProps={{
+                                    style: { color: '#fff' } // Cambia el color del placeholder aquí
                                 }}
-                                name="password"
-                                label="Contraseña"
-                                type="password"
+                                sx={sty}
+                                name="email"
+                                label="E-mail"
                                 fullWidth
-                                value={password}
+                                value={email}
                                 onChange={(e) => {
-                                    setPassword(e.target.value);
-                                    setFormErrors((prevErrors) => ({ ...prevErrors, password: "" }));
+                                    setEmail(e.target.value);
+                                    setFormErrors((prevErrors) => ({ ...prevErrors, email: "" }));
                                 }}
-                                error={formErrors.password ? true : false}
-                                helperText={formErrors.password}
+                                error={formErrors.email ? true : false}
+                                helperText={formErrors.email}
                             />
                         </Grid>
-                    ) :
-                        <Grid item xs={12}>
-                            <TextField
-                                required
-                                InputProps={{ className: styles.input }}
-                                sx={{
-                                    '& label.Mui-focused': {
-                                        color: '#4b3a2e'
-                                    },
-                                    '& .MuiOutlinedInput-root': {
-                                        '&.Mui-focused fieldset': {
-                                            borderColor: '#4b3a2e'
-                                        }
-                                    }
-                                }}
-                                name="password"
-                                label="Contraseña"
-                                type="password"
-                                fullWidth
-                                value={password}
-                                onChange={(e) => {
-                                    setPassword(e.target.value);
-                                    setFormErrors((prevErrors) => ({ ...prevErrors, password: "" }));
-                                }}
-                                error={formErrors.password ? true : false}
-                                helperText={formErrors.password}
-                            />
-                        </Grid>
-                    }
-                    <Grid item xs={6} sm={6} >
                         {isSignUp == true ? (
-                            <TextField
-                                required
-                                InputProps={{ className: styles.input }}
-                                sx={{
-                                    '& label.Mui-focused': {
-                                        color: '#4b3a2e'
-                                    },
-                                    '& .MuiOutlinedInput-root': {
-                                        '&.Mui-focused fieldset': {
-                                            borderColor: '#4b3a2e'
-                                        }
-                                    }
-                                }}
-                                name="confirmPassword"
-                                label="Confirmar Contraseña"
-                                type="password"
-                                fullWidth
-                                value={confirmPassword}
-                                onChange={(e) => {
-                                    setConfirmPassword(e.target.value);
-                                    setFormErrors((prevErrors) => ({ ...prevErrors, confirmPassword: "" }));
-                                }}
-                                error={formErrors.confirmPassword ? true : false}
-                                helperText={formErrors.confirmPassword}
-                            />) : null}
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            sx={{
-                                mb: 3
-                            }}
-                            onClick={handleFormSubmit}
-                        >
-                            {isSignUp ? 'Registrate' : 'Iniciar sesión'}
-                        </Button>
-                    </Grid>
-                </Grid>
-                <Grid container justifyContent="flex-end" >
-                    <Grid item>
-                        {isSignUp ?
-                            (
-                                <Link href="/login" variant="body2" >
-                        Ya tienes una cuenta? Inicia sesion.
-                    </Link>
-                    ) :
-                    (
-                    <Grid item spacing={2} textAlign="right">
-                        <Grid Grid item xs={12} sm={12}>
-                            <Link href="/register" variant="body2" >
-                                Aun no tienes una cuenta? Registrate.
-                            </Link>
-                        </Grid>
-                        <Grid Grid item xs={12} sm={12} mt={2}>
-                            <Link href="/passwordReset" variant="body2" >
-                                Olvidaste tu contraseña?
-                            </Link>
-                        </Grid>
-                    </Grid>
-
-                    )
+                            <Grid item xs={6} sm={6} >
+                                <TextField
+                                    required
+                                    InputProps={{ className: styles.input }}
+                                    InputLabelProps={{
+                                        style: { color: '#fff' } // Cambia el color del placeholder aquí
+                                    }}
+                                    sx={sty}
+                                    name="password"
+                                    label="Contraseña"
+                                    type="password"
+                                    fullWidth
+                                    value={password}
+                                    onChange={(e) => {
+                                        setPassword(e.target.value);
+                                        setFormErrors((prevErrors) => ({ ...prevErrors, password: "" }));
+                                    }}
+                                    error={formErrors.password ? true : false}
+                                    helperText={formErrors.password}
+                                />
+                            </Grid>
+                        ) :
+                            <Grid item xs={12}>
+                                <TextField
+                                    required
+                                    InputProps={{ className: styles.input }}
+                                    InputLabelProps={{
+                                        style: { color: '#fff' } // Cambia el color del placeholder aquí
+                                    }}
+                                    sx={sty}
+                                    name="password"
+                                    label="Contraseña"
+                                    type="password"
+                                    fullWidth
+                                    value={password}
+                                    onChange={(e) => {
+                                        setPassword(e.target.value);
+                                        setFormErrors((prevErrors) => ({ ...prevErrors, password: "" }));
+                                    }}
+                                    error={formErrors.password ? true : false}
+                                    helperText={formErrors.password}
+                                />
+                            </Grid>
                         }
-                </Grid>
-            </Grid>
-        </Box>
-        </FormWrapper >
+                        <Grid item xs={6} sm={6} >
+                            {isSignUp == true ? (
+                                <TextField
+                                    required
+                                    InputProps={{ className: styles.input }}
+                                    InputLabelProps={{
+                                        style: { color: '#fff' } // Cambia el color del placeholder aquí
+                                    }}
+                                    sx={sty}
+                                    name="confirmPassword"
+                                    label="Confirmar Contraseña"
+                                    type="password"
+                                    fullWidth
+                                    value={confirmPassword}
+                                    onChange={(e) => {
+                                        setConfirmPassword(e.target.value);
+                                        setFormErrors((prevErrors) => ({ ...prevErrors, confirmPassword: "" }));
+                                    }}
+                                    error={formErrors.confirmPassword ? true : false}
+                                    helperText={formErrors.confirmPassword}
+                                />) : null}
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                sx={{
+                                    mb: 3,
+                                    borderRadius: '50px',
+                                    backgroundColor: '#946FB5',
+                                    '&:hover': {
+                                        backgroundColor: '#946FB5',
+                                    },
+                                }}
+                                onClick={handleFormSubmit}
+                            >
+                                {isSignUp ? 'Registrate' : 'Iniciar sesión'}
+                            </Button>
+                        </Grid>
+                    </Grid>
+                    <Grid container justifyContent="flex-end">
+                        <Grid item>
+                            {isSignUp ?
+                                (
+                                    <Link href="/login" className={styles.link}>
+                                        Ya tienes una cuenta? Inicia sesion.
+                                    </Link>
+                                ) :
+                                (
+                                    <Grid item spacing={2} textAlign="right"  >
+                                        <Grid Grid item xs={12} sm={12} >
+                                            <Link href="/register" className={styles.link}>
+                                                Aun no tienes una cuenta? Registrate.
+                                            </Link>
+                                        </Grid>
+                                        <Grid Grid item xs={12} sm={12} mt={2} >
+                                            <Link href="/passwordReset"className={styles.link}>
+                                                Olvidaste tu contraseña?
+                                            </Link>
+                                        </Grid>
+                                    </Grid>
+
+                                )
+                            }
+                        </Grid>
+                    </Grid>
+                </Box>
+            </FormWrapper >
+        </Grid>
     )
 }
 export default UserForm; 

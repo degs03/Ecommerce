@@ -6,15 +6,16 @@ import Link from "next/link";
 const FormWrapper = ({ children }) => {
     const Copyright = (value) => {
         return (
-            <Typography variant="body2" color="text.secondary" align="center" {...value}>
+            <Typography variant="body2" color="text.secondary" align="center" style={{color:'#FFFF'}} {...value}>
                 {'Copyright © '}
                 <Link
-                    color="inherit"
+                    color="#FFF"
                     href="/"
                     style={{
                         textDecoration: 'none',
+                        color:'#FFFF'
                     }}>
-                    FindYourPet
+                    Eccomerce
                 </Link>{' '}
                 {new Date().getFullYear()}
                 {'.'}
@@ -27,8 +28,8 @@ const FormWrapper = ({ children }) => {
                 display="flex"
                 justifyContent="center"
                 alignItems="center"
-                minHeight="90vh">
-                <Container component="main" maxWidth="xs" disableGutters={true} sx={{px:2}}>{/**Coloca como un componente MAIN y lo dejo su maxWidth a xs O 12 */}
+                minHeight="100vh">
+                <Container component="main" maxWidth="xs" disableGutters={true}>{/**Coloca como un componente MAIN y lo dejo su maxWidth a xs O 12 */}
                     <Box
                         sx={{
                             display: 'flex',
@@ -36,18 +37,17 @@ const FormWrapper = ({ children }) => {
                             alignItems: 'center',
                             justifyContent: 'center',   
                             p:2.5,
-                            backgroundColor: 'rgba(248, 248, 248, 0.507)',
-                            borderRadius: 3,
-                            /** 
                             padding: 5,
                             mb: 5,
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
                             justifyContent: 'center',
-            **/}}
+                            borderRadius:'10px',
+                            backgroundColor: 'rgba(0,0,0,.1)'
+            }}
                     >
-                        <Avatar sx={{ m: 1, bgcolor: '#ED581D' }}>
+                        <Avatar sx={{ m: 1, bgcolor: '#946FB5' }}>
                             <LockOutlinedIcon />
                         </Avatar>
                         {children}

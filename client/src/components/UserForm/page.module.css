@@ -1,3 +1,11 @@
 .input {
-    background-color: rgba(248, 248, 248, 0.507);
+    border-color: transparent;
+    background: transparent;
+    border-radius: 20px;
+}
+
+.link {
+    text-decoration: none;
+    box-shadow: none;
+    color: #FFF;
 }

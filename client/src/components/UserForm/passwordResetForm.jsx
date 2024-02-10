@@ -1,15 +1,14 @@
 'use client'
 import { Fragment, useState } from "react";
-import Box from '@mui/material/Box';
-import Stepper from '@mui/material/Stepper';
-import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
+import Box from '@mui/material/Box';;
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { Container, CssBaseline, Grid, MobileStepper, TextField } from "@mui/material";
+import { Avatar, Container, CssBaseline, Grid, MobileStepper, TextField } from "@mui/material";
 import { passwordReset, passwordResetToken } from "@/app/api/route";
 import { MuiOtpInput } from "mui-one-time-password-input";
 import { useRouter } from "next/navigation";
+import styles from "./page.module.css";
+import Link from "next/link";
 
 
 const steps = ['a', 'b', 'c'];
@@ -68,30 +67,71 @@ const PasswordResetForm = () => {
     const handleReset = () => {
         setActiveStep(0);
     };
+    const sty = {
+        '& label.Mui-focused': {
+            color: '#fff',
+            borderColor: '#fff'
+        },
+        '& .MuiOutlinedInput-root': {
+            '&.Mui-focused fieldset': {
+                color: '#fff',
+                borderColor: '#fff'
+            }
+        },
+        "& .MuiOutlinedInput-notchedOutline": {
+            borderColor: "#fff",
+        },
+        borderRadius: '20px'
+    };
 
     return (
         <Box
             display="flex"
             justifyContent="center"
             alignItems="center"
-            minHeight="90vh">
-            <Container component="main" maxWidth="sm" disableGutters={true} sx={{ px: 2 }}>{/**Coloca como un componente MAIN y lo dejo su maxWidth a xs O 12 */}
+            minHeight="100vh">
+            <Container component="main" maxWidth="sm" disableGutters={true}>{/**Coloca como un componente MAIN y lo dejo su maxWidth a xs O 12 */}
                 <CssBaseline />
-                <Box sx={{ width: '100%' }}>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        py: 5,
+                        borderRadius: '10px',
+                        backgroundColor: 'rgba(0,0,0,.1)'
+                    }}
+                >
+                    <Avatar sx={{ bgcolor: '#946FB5' }}>?</Avatar>
+                    <Box sx={{ pt: 2, pb: 5 }}>
+                        <Typography variant='h5' color={'white'}>
+                            Solicita tu codigo
+                        </Typography>
 
+                    </Box>
                     {activeStep === steps.length ? (
-                        <Fragment>
-                            <Typography sx={{ mt: 2, mb: 1 }}>
+                        <Box>
+                            <Typography sx={{ mt: 2, mb: 1 }} color={'white'}>
                                 Password Changed Succesfully
                             </Typography>
                             <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
                                 <Box sx={{ flex: '1 1 auto' }} />
                                 <Button onClick={handleReset}>Reset</Button>
                             </Box>
-                        </Fragment>
+                        </Box>
                     ) : (
                         <Fragment>
-                            <Box sx={{ mt: 4 }}>
+
+                            <Box sx={{
+                                width: 1,
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                px: 6,
+                                py: 3
+                            }}>
                                 {
                                     activeStep === 0 &&
                                     <TextField
@@ -99,12 +139,17 @@ const PasswordResetForm = () => {
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                         label="Email"
+                                        InputProps={{ className: styles.input }}
+                                        InputLabelProps={{
+                                            style: { color: '#fff' } // Cambia el color del placeholder aquí
+                                        }}
+                                        sx={sty}
                                         fullWidth
                                     />
                                 }
                                 {
                                     activeStep === 1 &&
-                                    <MuiOtpInput length={6} value={token} onChange={setToken} />
+                                    <MuiOtpInput length={6} value={token} onChange={setToken} sx={sty} />
                                 }
                                 {
                                     activeStep === 2 &&
@@ -114,29 +159,45 @@ const PasswordResetForm = () => {
                                         onChange={(e) => setPassword(e.target.value)}
                                         label="New Password"
                                         type="password"
+                                        InputProps={{ className: styles.input }}
+                                        InputLabelProps={{
+                                            style: { color: '#fff' } // Cambia el color del placeholder aquí
+                                        }}
+                                        sx={sty}
                                         fullWidth
                                     />
                                 }
-                                <Container component="main" maxWidth="xs" disableGutters={true} sx={{ px: 2 }}>
+                                <Container component="main" maxWidth="xs" disableGutters={true} >
                                     <MobileStepper
                                         variant="progress"
                                         steps={4}
                                         position="static"
                                         activeStep={activeStep}
-                                        sx={{ maxWidth: 400, flexGrow: 1 }}
+                                        className={styles.input}
+                                        sx={{ flexGrow: 1, pt: 8 }}
                                         nextButton={
-                                            <Button size="small" onClick={handleNext} disabled={activeStep === 3}>
-                                                {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                                            <Button size="small" onClick={handleNext} disabled={activeStep === 3} sx={{ color: '#FFF' }}>
+                                                {activeStep === steps.length - 1 ? 'Finish' : 'Next >'}
                                             </Button>
                                         }
                                         backButton={
-                                            <Button size="small" onClick={handleBack} disabled={activeStep === 0 || activeStep === 1}>
-                                                Back
+                                            <Button size="small" onClick={handleBack} disabled={activeStep === 0 || activeStep === 1} >
+                                                {activeStep === steps.length - 1 ? '' : '< Back'}
                                             </Button>
                                         }
                                     />
+
                                 </Container>
                             </Box>
+                                <Grid container justifyContent="flex-end" sx={{px:5}}>
+                                    <Grid item>
+                                        <Grid Grid item xs={12} sm={12} >
+                                            <Link href="/register" className={styles.link}>
+                                                Volver al Registro?
+                                            </Link>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
                         </Fragment>
                     )}
                 </Box>
