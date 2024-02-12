@@ -3,8 +3,3 @@
   padding: 0px;
   font-family: "Montserrat";
 }
-
-body {
-  background: rgb(183, 110, 166);
-  background: linear-gradient(36deg, rgba(183, 110, 166, 1) 0%, rgba(108, 101, 179, 1) 50%, rgba(64, 95, 186, 1) 100%);
-}

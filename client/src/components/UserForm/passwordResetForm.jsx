@@ -9,21 +9,13 @@ import { MuiOtpInput } from "mui-one-time-password-input";
 import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
 import Link from "next/link";
-
-
 const steps = ['a', 'b', 'c'];
-
 const PasswordResetForm = () => {
-
     const router = useRouter();
-
     const [email, setEmail] = useState("");
     const [token, setToken] = useState("");
     const [password, setPassword] = useState("");
-
     const [activeStep, setActiveStep] = useState(0);
-
-
     const handleNext = async () => {
         if (activeStep === 0) {
             try {
@@ -89,7 +81,8 @@ const PasswordResetForm = () => {
             display="flex"
             justifyContent="center"
             alignItems="center"
-            minHeight="100vh">
+            minHeight="100vh"
+            className= {styles.image}>
             <Container component="main" maxWidth="sm" disableGutters={true}>{/**Coloca como un componente MAIN y lo dejo su maxWidth a xs O 12 */}
                 <CssBaseline />
                 <Box
@@ -181,8 +174,8 @@ const PasswordResetForm = () => {
                                             </Button>
                                         }
                                         backButton={
-                                            <Button size="small" onClick={handleBack} disabled={activeStep === 0 || activeStep === 1} >
-                                                {activeStep === steps.length - 1 ? '' : '< Back'}
+                                            <Button size="small" onClick={handleBack} sx={{ color: '#FFF' }} disabled={activeStep === 0 || activeStep === 1} >
+                                                {activeStep === steps.length - 1 ? '< Back' : '< Back'}
                                             </Button>
                                         }
                                     />

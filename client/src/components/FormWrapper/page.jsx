@@ -2,6 +2,7 @@ import { Fragment } from "react";
 import { Avatar, Box, Container, Typography } from "@mui/material";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Link from "next/link";
+import styles from "../UserForm/page.module.css";
 
 const FormWrapper = ({ children }) => {
     const Copyright = (value) => {
@@ -28,7 +29,9 @@ const FormWrapper = ({ children }) => {
                 display="flex"
                 justifyContent="center"
                 alignItems="center"
-                minHeight="100vh">
+                minHeight="100vh"
+                className= {styles.image}
+                >
                 <Container component="main" maxWidth="xs" disableGutters={true}>{/**Coloca como un componente MAIN y lo dejo su maxWidth a xs O 12 */}
                     <Box
                         sx={{
