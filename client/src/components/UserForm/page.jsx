@@ -16,7 +16,7 @@ const UserForm = ({ onSubmit, preset = {}, isSignUp }) => { //preset trae data
     const [confirmPassword, setConfirmPassword] = useState("");
     const [error, setError] = useState({});
     const [formErrors, setFormErrors] = useState({});
-    const createdOk = () => { isSignUp == true ? router.push("/account/login") : router.push("/"); };
+    const createdOk = () => { isSignUp == true ? router.push("/login") : router.push("/"); };
     const createdFail = (errorMsg) => {
         if (errorMsg.response?.data?.message?.errors) {
             const validationErrors = errorMsg.response.data.message.errors;
@@ -270,7 +270,6 @@ const UserForm = ({ onSubmit, preset = {}, isSignUp }) => { //preset trae data
                                             </Link>
                                         </Grid>
                                     </Grid>
-
                                 )
                             }
                         </Grid>
