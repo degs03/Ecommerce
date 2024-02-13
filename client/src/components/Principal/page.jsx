@@ -23,7 +23,7 @@ const Principal = () => {
                                 variant="contained"
                                 sx={{
                                     borderRadius: '50px',
-                                    p:2,
+                                    p: 2,
                                     backgroundColor: '#A2A0D5',
                                     '&:hover': {
                                         backgroundColor: '#A2A0D5',
@@ -42,6 +42,35 @@ const Principal = () => {
                                 />
                             </CardMedia>
                         </Grid>
+                    </Grid>
+                </Grid>
+                <Grid container spacing={3} sx={{ display: 'flex', justifyContent: 'center'}}>
+                    <Grid item xs={12} sm={4}>
+                        <CardMedia>
+                            <Image
+                                src={tshirt}
+                                alt="Descripción de la imagen"
+                                layout="responsive"
+                            />
+                        </CardMedia>
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                        <CardMedia>
+                            <Image
+                                src={tshirt}
+                                alt="Descripción de la imagen"
+                                layout="responsive"
+                            />
+                        </CardMedia>
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                        <CardMedia>
+                            <Image
+                                src={tshirt}
+                                alt="Descripción de la imagen"
+                                layout="responsive"
+                            />
+                        </CardMedia>
                     </Grid>
                 </Grid>
             </Container>

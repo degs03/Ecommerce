@@ -17,7 +17,7 @@ export function passwordReset(data) {
 }
 
 //-----------------RESET TOKEN--------------------------------->
-export function passwordResetToken(params = {}) {   
+export function passwordResetToken(params = {}) {
     return new Promise(async (resolve, reject) => {
         try {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/user/resetPassword`,
@@ -25,6 +25,22 @@ export function passwordResetToken(params = {}) {
                     params: params,
                     withCredentials: true
                 });
+            const result = await response.data;
+            resolve(result);
+        } catch (error) {
+            console.log(error);
+            reject(error);
+        }
+    });
+}
+
+
+//------------------NEW PRODUCT------------------------------------->
+
+export function newPost(data) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/post/new`, data,{withCredentials: true});
             const result = await response.data;
             resolve(result);
         } catch (error) {

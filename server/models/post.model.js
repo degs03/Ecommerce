@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 
-const ProductSchema = new mongoose.Schema({
+const PostSchema = new mongoose.Schema({
     title: {
         type: String,
-        required: true,
+        required: [true,"El titulo es requerido!"],
         minLength: [3, "Debe ser mayor a 3 caracter."],
         maxLength: [100, "Debe ser menor a 100 caracteres."]
     },
@@ -28,7 +28,7 @@ const ProductSchema = new mongoose.Schema({
     },
     image: {
         type: Array,
-        required: [true, "La imagen es obligatoria."]
+        required: true
     },
     stock: {
         type: Number,
@@ -36,4 +36,4 @@ const ProductSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('Product', ProductSchema);
+module.exports = mongoose.model('Post', PostSchema);
