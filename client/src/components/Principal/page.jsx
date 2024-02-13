@@ -9,8 +9,8 @@ const Principal = () => {
         <Fragment>
             <Container maxWidth="lg">
                 <Grid container >
-                    <Grid item spacing={2} sx={{ display: 'flex', alignItems: 'center', justifyContent: "center" }}>
-                        <Grid xs={12} sm={6} sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
+                    <Grid container spacing={2} sx={{ display: 'flex', alignItems: 'center', justifyContent: "center" }}>
+                        <Grid item xs={5.5} sm={6} sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
                             <CardMedia>
                                 <Image
                                     src={title}
@@ -33,7 +33,7 @@ const Principal = () => {
                                 Shop Now
                             </Button>
                         </Grid>
-                        <Grid xs={12} sm={6}>
+                        <Grid item xs={6.5} sm={6}>
                             <CardMedia>
                                 <Image
                                     src={tshirt}

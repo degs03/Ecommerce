@@ -1,24 +1,26 @@
 "use client"
-import React, { Fragment, useCallback, useState } from 'react';
-import Image from "next/image";
+import { Fragment, useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import styles from './page.module.css';
 import { db, storage } from '@/firebase/config';
 import { addDoc, collection, serverTimestamp, updateDoc, doc, arrayUnion } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import { Button, Grid } from '@mui/material';
+import { Button, Grid, LinearProgress, TextField, Typography } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { usePostContext } from '../../app/context/PostContext';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import ImageIcon from '@mui/icons-material/Image';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 
 const Dropzone = ({ onFilesUploaded }) => {
     const [files, setFiles] = useState([]);
     const { setDownloadURLs } = usePostContext();
+    let downloadURLs = [];
 
     const uploadPost = async () => {
         const docRef = await addDoc(collection(db, "post"), {
             timestamp: serverTimestamp()
         });
-        let downloadURLs = [];
         await Promise.all(
             files.map(async image => {
                 const imageRef = ref(storage, `post/${docRef.id}/${image.path}`);
@@ -28,13 +30,17 @@ const Dropzone = ({ onFilesUploaded }) => {
                     images: arrayUnion(downloadURL)
                 });
                 downloadURLs.push(downloadURL);
+                downloadURLs === undefined ?
+                    onFilesUploaded(false) :
+                    onFilesUploaded(true)
             })
         );
         setDownloadURLs(downloadURLs);
         setFiles([]);
-        onFilesUploaded(true);
     };
-
+    const handleDeleteFile = (file) => {
+        setFiles(prevFiles => prevFiles.filter(f => f !== file));
+    };
     // Funcion que recibe los archivos aceptados y rechazados
     const onDrop = useCallback(acceptedFiles => {
         // Si hay archivos aceptados, se asignaran en el useState tomando los valores anteriores para agregarle los nuevos
@@ -58,19 +64,29 @@ const Dropzone = ({ onFilesUploaded }) => {
             <div {...getRootProps({ // Todos los atributos se pasan por la funcion getRootProps para evitar sobreescribir sus atributos
                 className: styles.dropzone
             })}>
-                <input {...getInputProps()}/>
+                <TextField {...getInputProps()} />
                 {isDragActive ? // Detecta si el usuario esta arrastrando un archivo
                     <CloudUploadIcon sx={{ color: 'white' }} /> : <CloudUploadIcon sx={{ color: 'white' }} />
                 }
             </div>
             {/* Preview */}
-            <ul>
-                {files.map(file => (
-                    <li key={file.name} style={{ listStyleType: 'none' }}>
-                        <Image src={file.preview} alt='' width={100} height={100} />
-                    </li>
+            <Grid container sx={{ display: 'flex', flexDirection: 'row', p: 1 }}>
+                {files.map((file, idx) => (
+                    <Grid container key={idx} sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        my: 0.3,
+                        p: 1,
+                        border: "1px solid",
+                        borderRadius: '50px',
+                        color: 'white'
+                    }}>
+                        <Typography sx={{ color: "white", display: 'flex' }}><ImageIcon size="small" />{file.name}</Typography>
+                        <DeleteIcon size='small' sx={{ color: "white" }} onClick={() => handleDeleteFile(file)} />
+                    </Grid>
                 ))}
-            </ul>
+            </Grid>
             <Grid container sx={{ justifyContent: 'center' }}>
                 <Button onClick={uploadPost}
                     sx={{
@@ -80,7 +96,7 @@ const Dropzone = ({ onFilesUploaded }) => {
                         '&:hover': {
                             backgroundColor: '#946FB5',
                         },
-                        color:'white'
+                        color: 'white'
                     }}
                 >
                     Guardar Imagenes
