@@ -2,12 +2,22 @@
 import { Box, Button, CardMedia, Container, Grid } from "@mui/material";
 import title from '/public/images/title.PNG';
 import tshirt from '/public/images/shirt.PNG';
+import more from '/public/images/ViewMore.png';
 import Image from "next/image";
 import { Fragment } from "react";
 const Principal = () => {
     return (
         <Fragment>
             <Container maxWidth="lg">
+                <Grid item sx={{ display: 'flex', position: 'sticky', top: {xs: "85vh", sm:"80vh"}, justifyContent: 'flex-end' }}>
+                    <Button sx={{position:'absolute'}}>
+                        <Image
+                            src={more}
+                            alt="Descripción de la imagen"
+                            layout="responsive"
+                        />
+                    </Button>
+                </Grid>
                 <Grid container >
                     <Grid container spacing={2} sx={{ display: 'flex', alignItems: 'center', justifyContent: "center" }}>
                         <Grid item xs={5.5} sm={6} sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
@@ -44,7 +54,7 @@ const Principal = () => {
                         </Grid>
                     </Grid>
                 </Grid>
-                <Grid container spacing={3} sx={{ display: 'flex', justifyContent: 'center'}}>
+                <Grid container spacing={3} sx={{ display: 'flex', justifyContent: 'center' }}>
                     <Grid item xs={12} sm={4}>
                         <CardMedia>
                             <Image
