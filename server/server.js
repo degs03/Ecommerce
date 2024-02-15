@@ -9,9 +9,8 @@ app.use(cookieParser());
 app.use(
     cors({
         credentials: true,
-        origin: [`${process.env.API_URL}`,]
-    })
-);
+        origin: [
+            `${process.env.API_URL}`,"https://zdq13561-3000.brs.devtunnels.ms"]}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

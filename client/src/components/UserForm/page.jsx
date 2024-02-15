@@ -258,7 +258,7 @@ const UserForm = ({ onSubmit, preset = {}, isSignUp }) => { //preset trae data
                                     </Link>
                                 ) :
                                 (
-                                    <Grid item spacing={2} textAlign="right"  >
+                                    <Grid container spacing={2} textAlign="right"  >
                                         <Grid Grid item xs={12} sm={12} >
                                             <Link href="/register" className={styles.link}>
                                                 Aun no tienes una cuenta? Registrate.

@@ -179,7 +179,6 @@ const PasswordResetForm = () => {
                                             </Button>
                                         }
                                     />
-
                                 </Container>
                             </Box>
                                 <Grid container justifyContent="flex-end" sx={{px:5}}>
