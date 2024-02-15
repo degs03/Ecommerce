@@ -7,10 +7,12 @@ import { Fragment } from "react";
 import CheckroomIcon from '@mui/icons-material/Checkroom';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { selectRol} from '@/lib/features/users/userSlice';
+import { useRouter } from "next/navigation";
 const Principal = () => {
     const dispatch = useAppDispatch();
     const rol = useAppSelector(selectRol);
     console.log(rol);
+    const router = useRouter();
     return (
         <Fragment>
             <Container maxWidth="lg">
@@ -21,6 +23,7 @@ const Principal = () => {
                                 <Button
                                     type="submit"
                                     variant="contained"
+                                    onClick={()=>{ router.push("/newPost")}}
                                     sx={{
                                         width: { xs: '90vw', sm: '200px' },
                                         p: { xs: 1, sm: 2 },
