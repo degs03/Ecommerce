@@ -1,23 +1,42 @@
 'use client'
-import { Box, Button, CardMedia, Container, Grid } from "@mui/material";
+import { Button, CardMedia, Container, Grid } from "@mui/material";
 import title from '/public/images/title.PNG';
 import tshirt from '/public/images/shirt.PNG';
-import more from '/public/images/ViewMore.png';
 import Image from "next/image";
 import { Fragment } from "react";
+import CheckroomIcon from '@mui/icons-material/Checkroom';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { selectRol} from '@/lib/features/users/userSlice';
 const Principal = () => {
+    const dispatch = useAppDispatch();
+    const rol = useAppSelector(selectRol);
+    console.log(rol);
     return (
         <Fragment>
             <Container maxWidth="lg">
-                <Grid item sx={{ display: 'flex', position: 'sticky', top: {xs: "85vh", sm:"80vh"}, justifyContent: 'flex-end' }}>
-                    <Button sx={{position:'absolute'}}>
-                        <Image
-                            src={more}
-                            alt="Descripción de la imagen"
-                            layout="responsive"
-                        />
-                    </Button>
-                </Grid>
+                {
+                    rol === 'admin' ?
+                        <Grid container sx={{ display: 'flex', position: 'sticky', top: { xs: "92vh", sm: "87vh" }, justifyContent: 'center' }}>
+                            <Grid item sx={{ position: 'absolute' }}>
+                                <Button
+                                    type="submit"
+                                    variant="contained"
+                                    sx={{
+                                        width: { xs: '90vw', sm: '200px' },
+                                        p: { xs: 1, sm: 2 },
+                                        borderRadius: '50px',
+                                        backgroundColor: '#946FB5',
+                                        '&:hover': {
+                                            backgroundColor: '#946FB5',
+                                        },
+                                    }}
+                                >
+                                    Add Product <CheckroomIcon />
+                                </Button>
+                            </Grid>
+                        </Grid> :
+                        null
+                }
                 <Grid container >
                     <Grid container spacing={2} sx={{ display: 'flex', alignItems: 'center', justifyContent: "center" }}>
                         <Grid item xs={5.5} sm={6} sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>

@@ -13,6 +13,8 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Link from 'next/link';
+import logo from '/public/images/logo.png'
+import Image from 'next/image';
 
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -37,7 +39,7 @@ function NavBar() {
     };
 
     return (
-        <AppBar position="static" sx={{ bgcolor: 'white', boxShadow: 'none', color: 'black' }}>
+        <AppBar position="sticky" sx={{ bgcolor: 'white', boxShadow: 'none', color: 'black' }}>
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     <Typography
@@ -53,7 +55,11 @@ function NavBar() {
                             textDecoration: 'none',
                         }}
                     >
-                        EC
+                        <Image
+                                    src={logo}
+                                    alt="Descripción de la imagen"
+                                    layout="responsive"
+                                />
                     </Typography>
 
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -97,16 +103,16 @@ function NavBar() {
                         noWrap
                         component="a"
                         sx={{
-                            mr: 2,
                             display: { xs: 'flex', md: 'none' },
                             flexGrow: 1,
-                            fontWeight: 700,
                             letterSpacing: '.3rem',
-                            color: 'inherit',
-                            textDecoration: 'none',
+                            color: 'inherit'
                         }}
                     >
-                        EC
+                        <Image
+                                    src={logo}
+                                    alt="Descripción de la imagen"
+                                />
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex', justifyContent: 'center' } }}>
                         {pages.map((page) => (
@@ -134,7 +140,7 @@ function NavBar() {
                     <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" sx={{ bgcolor: '#946FB5' }}/>
+                                <Avatar alt="Remy Sharp" sx={{ bgcolor: '#946FB5' }}/>
                             </IconButton>
                         </Tooltip>
                         <Menu

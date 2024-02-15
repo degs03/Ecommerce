@@ -17,6 +17,11 @@ const PostSchema = new mongoose.Schema({
         type: Number,
         required: true
     },  
+    category:{
+        type: String,
+        enum: ['Casual','Deportivas', 'Street wear', 'Formales' ],
+        required: true
+    },
     size: {
         type: String,
         enum: ['S', 'M', 'L', 'XL'],

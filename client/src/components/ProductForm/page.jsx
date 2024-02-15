@@ -1,6 +1,6 @@
 'use client'
 import Dropzone from "@/components/Dropzone/page";
-import { Box, Button, Container, Grid, MenuItem, TextField, Typography, Stepper, Step, StepLabel } from "@mui/material";
+import { Box, Button, Container, Grid, MenuItem, TextField, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { Fragment, useState } from "react";
 import { usePostContext } from "../../app/context/PostContext";
@@ -20,6 +20,7 @@ const ProductForm = () => {
             title: formData.get('title'),
             description: formData.get('description'),
             price: formData.get('price'),
+            category: formData.get('category'),
             size: formData.get('size'),
             color: formData.get('color'),
             image: downloadURLs,
@@ -35,7 +36,8 @@ const ProductForm = () => {
             setErrors({
                 title: valErrors.title?.message ? valErrors.title.message : "",
                 description: valErrors.description?.message ? valErrors.description.message : "",
-                price: valErrors.description?.price ? valErrors.description.price : "",
+                price: valErrors.price?.message ? valErrors.price.message : "",
+                category: valErrors.category?.message ? valErrors.category.message : "",
                 size: valErrors.size?.message ? valErrors.size.message : "",
                 color: valErrors.color?.message ? valErrors.color.message : "",
                 image: valErrors.image?.message ? valErrors.image.message : "",
@@ -151,6 +153,34 @@ const ProductForm = () => {
                                             </MenuItem>
                                             <MenuItem value="XL">
                                                 XL
+                                            </MenuItem>
+                                        </TextField>
+                                    </Grid>
+
+                                    <Grid item xs={12} sm={12}>
+                                        <TextField
+                                            select
+                                            sx={sty}
+                                            InputProps={{ className: styles.input }}
+                                            InputLabelProps={{
+                                                style: { color: '#fff' } // Cambia el color del placeholder aquí
+                                            }}
+                                            defaultValue={'Casual'}
+                                            name="category"
+                                            label="Seleccione la categoria"
+                                            fullWidth
+                                        >
+                                            <MenuItem value="Casual">
+                                                Casual
+                                            </MenuItem>
+                                            <MenuItem value="Deportivas">
+                                                Deportivas
+                                            </MenuItem>
+                                            <MenuItem value="Street wear">
+                                                Street wear
+                                            </MenuItem>
+                                            <MenuItem value="Formales">
+                                                Formales
                                             </MenuItem>
                                         </TextField>
                                     </Grid>

@@ -15,6 +15,7 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+
 const postRoutes = require("./routes/post.routes");
 app.use('/api/post', postRoutes);
 

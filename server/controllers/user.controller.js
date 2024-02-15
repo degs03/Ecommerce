@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const User = require("../models/user.model");
 const { generateTempToken } = require("../util/generateToken");
 const secretKey = process.env.JWT_SECRET_KEY;
-const {sendPasswordToken} = require("../util/email");
+const { sendPasswordToken } = require("../util/email");
 const PasswordToken = require("../models/passwordToken.model");
 /* const crypto = require("crypto"); */
 //esto se ejecuta una vez que se valida todo en el user.model
@@ -98,20 +98,18 @@ module.exports.login = async (req, res) => {
         const newJWT = jwt.sign({
             _id: user._id,
             firstName: user.firstName,
-            lastName: user.lastName
+            lastName: user.lastName,
+            rol: user.rol
         }, secretKey, { expiresIn: "10m" });
         res.cookie("userToken", newJWT, secretKey, { httpOnly: true });
         res.status(200);
-        res.json(
-            {
-                message: "logged ok",
-                usuario:
-                {
-                    _id: user._id,
-                    firstName: user.firstName,
-                    lastName: user.lastName
-                }
-            })
+        const rsUser = {
+            _id: user._id,
+            rol: user.rol,
+            firstName: user.firstName,
+            lastName: user.lastName
+        }
+        res.json({ user: rsUser, token: newJWT });
     } catch (error) {
         res.status(500);
         res.json({ message: error });
@@ -235,7 +233,7 @@ module.exports.passwordResetToken = async (req, res) => {
         res.json(newToken);
     } catch (error) {
         res.status(500);
-        res.json({message: error});
+        res.json({ message: error });
     }
 
 }
@@ -277,7 +275,7 @@ module.exports.passwordReset = async (req, res) => {
         res.json(userPatch);
     } catch (error) {
         res.status(500);
-        res.json({message: error});
+        res.json({ message: error });
     }
 
 }
