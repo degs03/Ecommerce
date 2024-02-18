@@ -167,7 +167,7 @@ const PasswordResetForm = () => {
                                         position="static"
                                         activeStep={activeStep}
                                         className={styles.input}
-                                        sx={{ flexGrow: 1, pt: 8 }}
+                                        sx={{ flexGrow: 1, pt: 8, bgcolor:'transparent' }}
                                         nextButton={
                                             <Button size="small" onClick={handleNext} disabled={activeStep === 3} sx={{ color: '#FFF' }}>
                                                 {activeStep === steps.length - 1 ? 'Finish' : 'Next >'}

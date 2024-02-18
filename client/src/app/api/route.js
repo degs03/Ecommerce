@@ -34,13 +34,32 @@ export function passwordResetToken(params = {}) {
     });
 }
 
-
 //------------------NEW PRODUCT------------------------------------->
 
 export function newPost(data) {
     return new Promise(async (resolve, reject) => {
         try {
-            const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/post/new`, data,{withCredentials: true});
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/post/new`, data, { withCredentials: true });
+            const result = await response.data;
+            resolve(result);
+        } catch (error) {
+            console.log(error);
+            reject(error);
+        }
+    });
+}
+
+//----------------GET ALL PRODUCT-------------------------------------------->
+
+export function getAll(params = {}) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/post/all`,
+                {
+                    params: params,
+                    withCredentials: true
+                }
+            );
             const result = await response.data;
             resolve(result);
         } catch (error) {

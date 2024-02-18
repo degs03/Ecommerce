@@ -132,8 +132,106 @@ const Principal = () => {
                             Optio quod nulla cupiditate quaerat dignissimos veniam et earum.
                         </Typography>
                     </Grid>
-                    <Grid container spacing={3} sx={{ width: 1, display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-
+                    <Grid container spacing={3} sx={{ width: 1, display: 'flex', flexDirection:'row', justifyContent: 'center', alignItems:'center' }}>
+                        <Grid item xs={10} sm={10} md={3.5}>
+                            <Card sx={{ width: {xs:'80vw', sm:'80vw', md:'25vw'}, height: '60vh', textAlign: 'center' }}>
+                                <Grid item sx={{ height: '100%', width: '100%', position: "relative" }}>
+                                    <Image
+                                        className={styles.image}
+                                        src={urban}
+                                        alt="Image Background T-Shirt"
+                                    />
+                                    <Grid item sx={{
+                                        height: '100%',
+                                        width: '100%',
+                                        position: "absolute",
+                                        top: 0, left: 0,
+                                        display: 'flex', flexDirection: 'column',
+                                        justifyContent: 'flex-end', alignItems: 'center'
+                                    }}>
+                                        <Grid item sx={{
+                                            background: 'rgba(255, 255, 255, 0.4)',
+                                            backdropFilter: "blur(1px)",
+                                            p: 2
+                                        }}>
+                                            <Typography gutterBottom variant="h5" >
+                                                Urban Style
+                                            </Typography>
+                                            <Typography variant="body2" color="text.secondary">
+                                                Lizards are a widespread group of squamate reptiles, with over 6,000
+                                                species, ranging across all continents except Antarctica
+                                            </Typography>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                            </Card>
+                        </Grid>
+                        <Grid item xs={10} sm={10} md={3.5}>
+                            <Card sx={{width: {xs:'80vw', sm:'80vw', md:'25vw'}, height: '60vh', textAlign: 'center' }}>
+                                <Grid item sx={{ height: '100%', width: '100%', position: "relative" }}>
+                                    <Image
+                                        className={styles.image}
+                                        src={formal}
+                                        alt="Image Background T-Shirt"
+                                    />
+                                    <Grid item sx={{
+                                        height: '100%',
+                                        width: '100%',
+                                        position: "absolute",
+                                        top: 0, left: 0,
+                                        display: 'flex', flexDirection: 'column',
+                                        justifyContent: 'flex-end', alignItems: 'center'
+                                    }}>
+                                        <Grid item sx={{
+                                            background: 'rgba(255, 255, 255, 0.4)',
+                                            backdropFilter: "blur(1px)",
+                                            p: 2
+                                        }}>
+                                            <Typography gutterBottom variant="h5" >
+                                                Urban Style
+                                            </Typography>
+                                            <Typography variant="body2" color="text.secondary">
+                                                Lizards are a widespread group of squamate reptiles, with over 6,000
+                                                species, ranging across all continents except Antarctica
+                                            </Typography>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                            </Card>
+                        </Grid>
+                        <Grid item xs={10} sm={10} md={3.5}>
+                            <Card sx={{ width: {xs:'80vw', sm:'80vw', md:'25vw'}, height: '60vh', textAlign: 'center' }}>
+                                <Grid item sx={{ height: '100%', width: '100%', position: "relative" }}>
+                                    <Image
+                                        className={styles.image}
+                                        src={sport}
+                                        alt="Image Background T-Shirt"
+                                    />
+                                    <Grid item sx={{
+                                        height: '100%',
+                                        width: '100%',
+                                        position: "absolute",
+                                        top: 0, left: 0,
+                                        display: 'flex', flexDirection: 'column',
+                                        justifyContent: 'flex-end', alignItems: 'center'
+                                    }}>
+                                        <Grid item sx={{
+                                            background: 'rgba(255, 255, 255, 0.4)',
+                                            backdropFilter: "blur(1px)",
+                                            p: 2
+                                        }}>
+                                            <Typography gutterBottom variant="h5" >
+                                                Urban Style
+                                            </Typography>
+                                            <Typography variant="body2" color="text.secondary">
+                                                Lizards are a widespread group of squamate reptiles, with over 6,000
+                                                species, ranging across all continents except Antarctica
+                                            </Typography>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                            </Card>
+                        </Grid>
                     </Grid>
                 </Grid>
             </Grid>
