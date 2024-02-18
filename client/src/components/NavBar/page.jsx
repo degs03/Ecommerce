@@ -13,8 +13,6 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Link from 'next/link';
-import logo from '/public/images/logo.png'
-import Image from 'next/image';
 
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -39,8 +37,8 @@ function NavBar() {
     };
 
     return (
-        <AppBar position="sticky" sx={{ bgcolor: 'white', boxShadow: 'none', color: 'black' }}>
-            <Container maxWidth="xl">
+        <AppBar  sx={{ bgcolor: 'transparent', boxShadow: 'none', color: 'black', background: 'rgba(255, 255, 255, 0.5)', backdropFilter: "blur(5px)"}}>
+            <Container maxWidth="xl" position="sticky">
                 <Toolbar disableGutters>
                     <Typography
                         variant="h6"    
@@ -53,13 +51,10 @@ function NavBar() {
                             letterSpacing: '.3rem',
                             color: 'inherit',
                             textDecoration: 'none',
+                            color:'#A2A0D5'
                         }}
                     >
-                        <Image
-                                    src={logo}
-                                    alt="Descripción de la imagen"
-                                    layout="responsive"
-                                />
+                        LunarLoom
                     </Typography>
 
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -93,7 +88,7 @@ function NavBar() {
                         >
                             {pages.map((page) => (
                                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Typography textAlign="center">{page}</Typography>
+                                    <Typography>{page}</Typography>
                                 </MenuItem>
                             ))}
                         </Menu>
@@ -106,15 +101,13 @@ function NavBar() {
                             display: { xs: 'flex', md: 'none' },
                             flexGrow: 1,
                             letterSpacing: '.3rem',
-                            color: 'inherit'
+                            color: 'inherit',
+                            color:'#A2A0D5'
                         }}
                     >
-                        <Image
-                                    src={logo}
-                                    alt="Descripción de la imagen"
-                                />
+                        LunarLoom
                     </Typography>
-                    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex', justifyContent: 'center' } }}>
+                    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent:'center', mr:17 }}>
                         {pages.map((page) => (
                             <Link key={page}
                                 href={'/'}
@@ -140,7 +133,7 @@ function NavBar() {
                     <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar alt="Remy Sharp" sx={{ bgcolor: '#946FB5' }}/>
+                                <Avatar alt="Remy Sharp" sx={{ color: '#946FB5', bgcolor:'lightgray' }}/>
                             </IconButton>
                         </Tooltip>
                         <Menu

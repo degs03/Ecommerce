@@ -4,7 +4,6 @@ import { PostProvider } from './context/PostContext';
 import { CookiesProvider } from "next-client-cookies/server";
 import { RolProvider } from "./context/RolContext";
 import StoreProvider from "./StoreProvider";
-
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
