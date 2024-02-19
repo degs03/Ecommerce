@@ -1,7 +1,7 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 
 import userReducer from "./features/users/userSlice";
-
+import cartReducer from './features/carts/cartSlice';
 
 import { persistReducer, persistStore } from 'redux-persist';
 
@@ -27,11 +27,17 @@ const userPersistConfig = {
     key: 'user',
     storage: storage,
 }
+const cartPersistConfig = {
+    key: 'cart',
+    storage: storage,
+}
 
 
 const rootReducer = combineReducers({
     user: persistReducer(userPersistConfig, userReducer),
+    cart: persistReducer(cartPersistConfig, cartReducer),
 })
+
 
 
 export const store = configureStore({

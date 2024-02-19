@@ -1,19 +1,98 @@
 'use client'
-import { Accordion, AccordionDetails, AccordionSummary, Card, CardActions, CardContent, CardMedia, Container, Grid, IconButton, InputAdornment, MenuItem, TextField, Toolbar, Typography } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, AppBar, Box, Card, CardActions, CardContent, CardMedia, Container, Fab, Grid, IconButton, InputAdornment, MenuItem, TextField, Toolbar, Typography, styled } from "@mui/material";
 import { Fragment, useEffect, useState } from "react";
 import SearchIcon from '@mui/icons-material/Search';
 import styles from "../UserForm/page.module.css";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { getAll } from "@/app/api/route";
-import ShoppingCartCheckoutOutlinedIcon from '@mui/icons-material/ShoppingCartCheckoutOutlined';
-import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
+import Badge from '@mui/material/Badge';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import Drawer from '@mui/material/Drawer';
+import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
+//-------------------REDUX-------------------------------->
+import { useDispatch, useSelector } from "react-redux";
+import CartItem from "../CartItem/page";
+import ProductItem from "../ProductItem/page";
+import Counter from "./counter";
+const StyledBadge = styled(Badge)(({ theme }) => ({
+    '& .MuiBadge-badge': {
+        right: -3,
+        top: 13,
+        border: `2px solid ${theme.palette.background.paper}`,
+        padding: '0 4px',
+    },
+}));
+const StyledFab = styled(Fab)({
+    position: 'absolute',
+    zIndex: 1,
+    top: -20,
+    left: 0,
+    right: 0,
+    margin: '0 auto',
+});
 const ShopPage = () => {
+    const cartItems = useSelector((state) => state.cart.cart);
+    const totalPrice = cartItems.reduce((acc, currentItem) => {
+        return acc + (currentItem.price * currentItem.qty);
+    }, 0)
+    const dispatch = useDispatch();
+    console.log(cartItems);
     const [product, setProduct] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [priceFilter, setPriceFilter] = useState('All');
     const [sizeFilter, setSizeFilter] = useState('All');
     const [categoryFilter, setCategoryFilter] = useState('All');
     const [search, setSearch] = useState('');
+    const [state, setState] = useState({
+        left: false
+    });
+    const toggleDrawer = (anchor, open) => (event) => {
+        if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+            return;
+        }
+        setState({ ...state, [anchor]: open });
+    };
+    const list = (anchor) => (
+        <Grid
+            container
+            sx={{ width: { lg: '30vw', md:'50vw', sm:'70vw', xs: '100vw' }, height: '100vh', p: 2 }}
+            role="presentation"
+            onClick={toggleDrawer(anchor, true)}
+            onKeyDown={toggleDrawer(anchor, false)}
+        >
+            <Grid item sx={{ width: 1, display: 'flex', justifyContent: 'center' }}>
+                <Typography variant="h4">
+                    Shopping Cart
+                </Typography>
+            </Grid>
+            <Grid item sx={{ width: '100%' }}>
+                {
+                    cartItems.length < 1 ?
+                        <Grid item sx={{display:'flex', flexDirection:'column', alignItems:'center'}}>
+                            <ErrorOutlineOutlinedIcon fontSize="large" />
+                            <Typography variant="h5" sx={{ fontWeight: 'bold', textAlign: 'center' }}>
+                                Aun no ha agregado nada
+                            </Typography>
+                        </Grid>
+                        :
+                        cartItems.map((item, idx) => {
+                            return <CartItem cartItem={item} key={idx} />
+                        })
+                }
+            </Grid>
+            <Grid item sx={{ display: 'flex', width: '100%', bottom: 0, position: 'sticky', alignItems: 'flex-end', justifyContent: 'center' }}>
+                <Grid item sx={{ display: 'flex', width: '100%', justifyContent: 'center', color: 'white', bgcolor: '#A2A0D5', p: 4 }}>
+                    <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
+                        Total:
+                    </Typography>
+                    <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
+                        {totalPrice} $
+                    </Typography>
+                </Grid>
+            </Grid>
+        </Grid>
+    );
+
     const getProducts = async () => {
         try {
             const result = await getAll();
@@ -234,32 +313,7 @@ const ShopPage = () => {
                             {filteredProducts.length > 0 ? (
                                 filteredProducts.map((item, idx) => {
                                     return (
-                                        <Grid item sm={6} md={4} lg={3} xs={12} sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-                                            <Card key={idx}>
-                                                <CardMedia
-                                                    sx={{ width: { lg: '260px', md: '200px', sm: '260px', xs: '100%' }, height: '350px' }}
-                                                    component="img"
-                                                    src={item.image[0]}
-                                                    alt="Product Image"
-                                                />
-                                                <CardContent>
-                                                    <Typography variant="body2" sx={{ fontWeight: 'bolder' }}>
-                                                        {item.title}
-                                                    </Typography>
-                                                    <Typography variant="body2" color="text.secondary">
-                                                        {item.price} $
-                                                    </Typography>
-                                                </CardContent>
-                                                <CardActions disableSpacing>
-                                                    <IconButton aria-label="add to favorites">
-                                                        <ShoppingCartCheckoutOutlinedIcon />
-                                                    </IconButton>
-                                                    <IconButton aria-label="share">
-                                                        <RemoveRedEyeOutlinedIcon />
-                                                    </IconButton>
-                                                </CardActions>
-                                            </Card>
-                                        </Grid>
+                                        <ProductItem product={item} key={idx} />
                                     )
                                 })) : (
                                 <Typography variant="h6" sx={{ fontWeight: 'bold', marginTop: 4 }}>
@@ -267,8 +321,26 @@ const ShopPage = () => {
                                 </Typography>)
                             }
                         </Grid>
+                        <AppBar position="fixed" color="transparent" sx={{ top: 'auto', bottom: 0, left: '37%', boxShadow: 'none', display: 'flex' }}>
+                            <Toolbar sx={{ display: 'flex', alignItems: 'flex-end' }}>
+                                <StyledFab aria-label="add" variant="contained" sx={{ p: 4 }} >
+                                    <IconButton aria-label="cart" onClick={toggleDrawer('right', true)}>
+                                        <StyledBadge badgeContent={<Counter />} color="secondary">
+                                            <ShoppingCartIcon />
+                                        </StyledBadge>
+                                    </IconButton>
+                                </StyledFab>
+                                <Box sx={{ flexGrow: 1 }} />
+                            </Toolbar>
+                        </AppBar>
+                        <Drawer
+                            anchor={'right'}
+                            open={state['right']}
+                            onClose={toggleDrawer('right', false)}
+                        >
+                            {list('right')}
+                        </Drawer>
                     </Grid>
- 
                 </Grid>
             </Container>
         </Fragment >
