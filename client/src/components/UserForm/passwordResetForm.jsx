@@ -9,6 +9,7 @@ import { MuiOtpInput } from "mui-one-time-password-input";
 import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
 import Link from "next/link";
+import Swal from "sweetalert2";
 const steps = ['a', 'b', 'c'];
 const PasswordResetForm = () => {
     const router = useRouter();
@@ -21,6 +22,18 @@ const PasswordResetForm = () => {
             try {
                 const getToken = await passwordResetToken({ email: email });
                 console.log(getToken);
+                Swal.fire({
+                    toast: true,
+                    icon: "success",
+                    iconColor: "white",
+                    position: "bottom",
+                    color: "white",
+                    title: "Se ha enviado el correo correctamente",
+                    background: "#a5dc86",
+                    showConfirmButton: false,
+                    timer: 2000,
+                    timerProgressBar: true,
+                });
                 setActiveStep((prevActiveStep) => prevActiveStep + 1);
             } catch (error) {
                 console.log(error);
@@ -82,7 +95,7 @@ const PasswordResetForm = () => {
             justifyContent="center"
             alignItems="center"
             minHeight="100vh"
-            className= {styles.image}>
+            className={styles.image}>
             <Container component="main" maxWidth="sm" disableGutters={true}>{/**Coloca como un componente MAIN y lo dejo su maxWidth a xs O 12 */}
                 <CssBaseline />
                 <Box
@@ -167,7 +180,7 @@ const PasswordResetForm = () => {
                                         position="static"
                                         activeStep={activeStep}
                                         className={styles.input}
-                                        sx={{ flexGrow: 1, pt: 8, bgcolor:'transparent' }}
+                                        sx={{ flexGrow: 1, pt: 8, bgcolor: 'transparent' }}
                                         nextButton={
                                             <Button size="small" onClick={handleNext} disabled={activeStep === 3} sx={{ color: '#FFF' }}>
                                                 {activeStep === steps.length - 1 ? 'Finish' : 'Next >'}
@@ -181,15 +194,15 @@ const PasswordResetForm = () => {
                                     />
                                 </Container>
                             </Box>
-                                <Grid container justifyContent="flex-end" sx={{px:5}}>
-                                    <Grid item>
-                                        <Grid Grid item xs={12} sm={12} >
-                                            <Link href="/register" className={styles.link}>
-                                                Volver al Registro?
-                                            </Link>
-                                        </Grid>
+                            <Grid container justifyContent="flex-end" sx={{ px: 5 }}>
+                                <Grid item>
+                                    <Grid Grid item xs={12} sm={12} >
+                                        <Link href="/register" className={styles.link}>
+                                            Volver al Registro?
+                                        </Link>
                                     </Grid>
                                 </Grid>
+                            </Grid>
                         </Fragment>
                     )}
                 </Box>

@@ -1,7 +1,8 @@
 'use client'
-import { Accordion, AccordionDetails, AccordionSummary, AppBar, Box, Card, CardActions, CardContent, CardMedia, Container, Fab, Grid, IconButton, InputAdornment, MenuItem, TextField, Toolbar, Typography, styled } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, AppBar, Box, Container, Fab, Grid, IconButton, InputAdornment, MenuItem, TextField, Toolbar, Typography, styled } from "@mui/material";
 import { Fragment, useEffect, useState } from "react";
 import SearchIcon from '@mui/icons-material/Search';
+import QueueIcon from '@mui/icons-material/Queue';
 import styles from "../UserForm/page.module.css";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { getAll } from "@/app/api/route";
@@ -9,11 +10,15 @@ import Badge from '@mui/material/Badge';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Drawer from '@mui/material/Drawer';
 import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
+import ClearIcon from '@mui/icons-material/Clear';
 //-------------------REDUX-------------------------------->
 import { useDispatch, useSelector } from "react-redux";
 import CartItem from "../CartItem/page";
 import ProductItem from "../ProductItem/page";
 import Counter from "./counter";
+import { useAppSelector } from '@/lib/hooks';
+import { selectRol } from '@/lib/features/users/userSlice';
+import { useRouter } from "next/navigation";
 const StyledBadge = styled(Badge)(({ theme }) => ({
     '& .MuiBadge-badge': {
         right: -3,
@@ -31,6 +36,9 @@ const StyledFab = styled(Fab)({
     margin: '0 auto',
 });
 const ShopPage = () => {
+    const rol = useAppSelector(selectRol);
+    const router = useRouter();
+    console.log(rol);
     const cartItems = useSelector((state) => state.cart.cart);
     const totalPrice = cartItems.reduce((acc, currentItem) => {
         return acc + (currentItem.price * currentItem.qty);
@@ -50,25 +58,27 @@ const ShopPage = () => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
             return;
         }
-        setState({ ...state, [anchor]: open });
+        setState({ ...state, [anchor]: Boolean(open) });
     };
     const list = (anchor) => (
         <Grid
             container
-            sx={{ width: { lg: '30vw', md:'50vw', sm:'70vw', xs: '100vw' }, height: '100vh', p: 2 }}
+            sx={{ width: { lg: '30vw', md: '50vw', sm: '70vw', xs: '100vw' }, p: 2 }}
             role="presentation"
-            onClick={toggleDrawer(anchor, true)}
             onKeyDown={toggleDrawer(anchor, false)}
         >
+            <IconButton onClick={toggleDrawer(anchor, false)}>
+                <ClearIcon fontSize="large" />
+            </IconButton>
             <Grid item sx={{ width: 1, display: 'flex', justifyContent: 'center' }}>
                 <Typography variant="h4">
                     Shopping Cart
                 </Typography>
             </Grid>
-            <Grid item sx={{ width: '100%' }}>
+            <Grid item sx={{ width: '100%', height: "100vh" }}>
                 {
                     cartItems.length < 1 ?
-                        <Grid item sx={{display:'flex', flexDirection:'column', alignItems:'center'}}>
+                        <Grid item sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 30 }}>
                             <ErrorOutlineOutlinedIcon fontSize="large" />
                             <Typography variant="h5" sx={{ fontWeight: 'bold', textAlign: 'center' }}>
                                 Aun no ha agregado nada
@@ -93,6 +103,11 @@ const ShopPage = () => {
         </Grid>
     );
 
+    const handleDeleteProduct = (productId) => {
+        // Filtra los productos para excluir el eliminado
+        const updatedProducts = product.filter(item => item._id !== productId);
+        setProduct(updatedProducts);
+    };
     const getProducts = async () => {
         try {
             const result = await getAll();
@@ -127,7 +142,6 @@ const ShopPage = () => {
         setFilteredProducts(filtered);
     };
 
-
     useEffect(() => {
         getProducts();
     }, []);
@@ -148,7 +162,6 @@ const ShopPage = () => {
     const handleSearchFilterChange = (event) => {
         setSearch(event.target.value);
     };
-
 
     const sty = {
         color: '#FFFF',
@@ -187,6 +200,32 @@ const ShopPage = () => {
 
     return (
         <Fragment>
+            {
+                rol === 'admin' ?
+                    <AppBar color="transparent" sx={{ top: 'auto', bottom: 80, width: '0px', left: { sm: '85%', xs: '75%' }, boxShadow: 'none', display: 'flex' }}>
+                        <Toolbar sx={{ display: 'flex', alignItems: 'flex-end' }}>
+                            <StyledFab aria-label="add" variant="contained" sx={{
+                                p: 4,
+                                height: '50px', width: { xs: '50px', sm: '50px', md: '50px' },
+                                mb: 3,
+                                color: 'white',
+                                borderRadius: '50px',
+                                backgroundColor: '#946FB5',
+                                '&:hover': {
+                                    backgroundColor: '#946FB5',
+                                },
+                            }
+                            }
+                                onClick={() => { router.push('/newPost') }}
+                            >
+                                <QueueIcon sx={{ height: '30px', width: '30px' }} />
+                            </StyledFab>
+                            <Box sx={{ flexGrow: 1 }} />
+                        </Toolbar>
+                    </AppBar> : rol != 'user' || rol === '' ?
+                        null :
+                        null
+            }
             <Toolbar sx={{ height: '80px' }} />
             <Container maxWidth="xl">
                 <Grid container sx=
@@ -230,7 +269,7 @@ const ShopPage = () => {
                                         aria-controls="panel1-content"
                                         id="panel1-header"
                                     >
-                                        Filtros
+                                        Filter
                                     </AccordionSummary>
                                     <AccordionDetails
                                     >
@@ -313,7 +352,7 @@ const ShopPage = () => {
                             {filteredProducts.length > 0 ? (
                                 filteredProducts.map((item, idx) => {
                                     return (
-                                        <ProductItem product={item} key={idx} />
+                                        <ProductItem product={item} key={idx} onDelete={handleDeleteProduct} />
                                     )
                                 })) : (
                                 <Typography variant="h6" sx={{ fontWeight: 'bold', marginTop: 4 }}>
@@ -321,14 +360,12 @@ const ShopPage = () => {
                                 </Typography>)
                             }
                         </Grid>
-                        <AppBar position="fixed" color="transparent" sx={{ top: 'auto', bottom: 0, left: '37%', boxShadow: 'none', display: 'flex' }}>
+                        <AppBar color="transparent" sx={{ top: 'auto', bottom: 0, width: '0px', left: { sm: '85%', xs: '75%' }, boxShadow: 'none', display: 'flex' }}>
                             <Toolbar sx={{ display: 'flex', alignItems: 'flex-end' }}>
-                                <StyledFab aria-label="add" variant="contained" sx={{ p: 4 }} >
-                                    <IconButton aria-label="cart" onClick={toggleDrawer('right', true)}>
-                                        <StyledBadge badgeContent={<Counter />} color="secondary">
-                                            <ShoppingCartIcon />
-                                        </StyledBadge>
-                                    </IconButton>
+                                <StyledFab aria-label="add" variant="contained" sx={{ p: 4 }} onClick={toggleDrawer('right', true)}>
+                                    <StyledBadge badgeContent={<Counter />} color="secondary">
+                                        <ShoppingCartIcon />
+                                    </StyledBadge>
                                 </StyledFab>
                                 <Box sx={{ flexGrow: 1 }} />
                             </Toolbar>

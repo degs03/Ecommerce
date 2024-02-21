@@ -16,7 +16,7 @@ const FormWrapper = ({ children }) => {
                         textDecoration: 'none',
                         color:'#FFFF'
                     }}>
-                    Eccomerce
+                    LunarLoom
                 </Link>{' '}
                 {new Date().getFullYear()}
                 {'.'}

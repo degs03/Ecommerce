@@ -1,5 +1,4 @@
 'use client'
-import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -13,14 +12,30 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Link from 'next/link';
-
-const pages = ['Products', 'Pricing', 'Blog'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+import { Grid } from '@mui/material';
+import { useCookies } from 'next-client-cookies';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAppSelector } from '@/lib/hooks';
+import { selectRol } from '@/lib/features/users/userSlice';
+import axios from 'axios';
+import Swal from 'sweetalert2';
+import { clearCart } from '@/lib/features/carts/cartSlice';
+import { useDispatch } from 'react-redux';
+import { clearUser } from '@/lib/features/users/userSlice';
+const pages = ['Products', 'Home'];
+const settings = ['Logout', 'Login'];
+const href = ['/shop', '/',]
 
 function NavBar() {
-    const [anchorElNav, setAnchorElNav] = React.useState(null);
-    const [anchorElUser, setAnchorElUser] = React.useState(null);
-
+    const [anchorElNav, setAnchorElNav] = useState(null);
+    const [anchorElUser, setAnchorElUser] = useState(null);
+    const rol = useAppSelector(selectRol);
+    const router = useRouter();
+    const dispatch = useDispatch();
+    const cookies = useCookies();
+    const miCookie = cookies.get('userToken');
+    console.log(miCookie);
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
     };
@@ -36,12 +51,40 @@ function NavBar() {
         setAnchorElUser(null);
     };
 
+    const handleLogout = async () => {
+        try {
+            const response = await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/session/logout`, { withCredentials: true });
+            const result = await response.data;
+            console.error(result);
+            router.push('/login');
+            dispatch(clearCart());
+            dispatch(clearUser());
+            Swal.fire({
+                toast: true,
+                icon: "success",
+                iconColor: "white",
+                position: "bottom",
+                color: "white",
+                title: "Has cerrado sesión correctamente",
+                background: "#a5dc86",
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+            });
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    const handleLogin = () => {
+        router.push('/login')
+    };
+
     return (
-        <AppBar  sx={{ bgcolor: 'transparent', boxShadow: 'none', color: 'black', background: 'rgba(255, 255, 255, 0.5)', backdropFilter: "blur(5px)"}}>
+        <AppBar sx={{ bgcolor: 'transparent', boxShadow: 'none', color: 'black', background: 'rgba(255, 255, 255, 0.5)', backdropFilter: "blur(5px)" }}>
             <Container maxWidth="xl" position="sticky">
                 <Toolbar disableGutters>
                     <Typography
-                        variant="h6"    
+                        variant="h6"
                         noWrap
                         component="a"
                         sx={{
@@ -51,7 +94,7 @@ function NavBar() {
                             letterSpacing: '.3rem',
                             color: 'inherit',
                             textDecoration: 'none',
-                            color:'#A2A0D5'
+                            color: '#A2A0D5'
                         }}
                     >
                         LunarLoom
@@ -83,13 +126,31 @@ function NavBar() {
                             open={Boolean(anchorElNav)}
                             onClose={handleCloseNavMenu}
                             sx={{
-                                display: { xs: 'block', md: 'none' },
+                                display: { xs: 'flex', flexDirection: 'column', md: 'none' },
                             }}
                         >
-                            {pages.map((page) => (
-                                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Typography>{page}</Typography>
-                                </MenuItem>
+                            {pages.map((page, idx) => (
+                                <Grid item key={idx}>
+                                    <Link key={page}
+                                        href={href[idx]}
+                                        sx={{
+                                            textDecoration: 'none',
+                                            my: 2, mx: 1,
+                                            fontWeight: 400,
+                                        }}
+                                    >
+                                        <Button
+                                            sx={{
+                                                textTransform: 'none',
+                                                color: 'black',
+                                                p: 2
+                                            }}
+                                            onClick={handleCloseNavMenu}
+                                        >
+                                            {page}
+                                        </Button>
+                                    </Link>
+                                </Grid>
                             ))}
                         </Menu>
                     </Box>
@@ -102,19 +163,20 @@ function NavBar() {
                             flexGrow: 1,
                             letterSpacing: '.3rem',
                             color: 'inherit',
-                            color:'#A2A0D5'
+                            color: '#A2A0D5'
                         }}
                     >
                         LunarLoom
                     </Typography>
-                    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent:'center', mr:17 }}>
-                        {pages.map((page) => (
+                    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'center', mr: 17 }}>
+                        {pages.map((page, idx) => (
                             <Link key={page}
-                                href={'/'}
+                                href={href[idx]}
                                 sx={{
                                     textDecoration: 'none',
                                     my: 2, mx: 1,
                                     fontWeight: 400,
+
                                 }}
                             >
                                 <Button
@@ -133,7 +195,7 @@ function NavBar() {
                     <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar alt="Remy Sharp" sx={{ color: '#946FB5', bgcolor:'lightgray' }}/>
+                                <Avatar alt="Remy Sharp" sx={{ color: '#946FB5', bgcolor: 'lightgray' }} />
                             </IconButton>
                         </Tooltip>
                         <Menu
@@ -152,11 +214,15 @@ function NavBar() {
                             open={Boolean(anchorElUser)}
                             onClose={handleCloseUserMenu}
                         >
-                            {settings.map((setting) => (
-                                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                    <Typography textAlign="center">{setting}</Typography>
-                                </MenuItem>
-                            ))}
+                            {
+                                miCookie && rol !== undefined ?
+                                    <MenuItem onClick={() => { handleCloseUserMenu; handleLogout() }}>
+                                        <Typography textAlign="center">{settings[0]}</Typography>
+                                    </MenuItem> :
+                                    <MenuItem onClick={()=>{handleCloseUserMenu; handleLogin()}}>
+                                        <Typography textAlign="center">{settings[1]}</Typography>
+                                    </MenuItem>
+                            }
                         </Menu>
                     </Box>
                 </Toolbar>

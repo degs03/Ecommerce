@@ -24,7 +24,7 @@ module.exports.sendPasswordToken = ({ user, token }) => {
             const html = template(options);
 
             const info = await transporter.sendMail({
-                from: '"Not Reply Proyecto Uno" <nribero@codingdojo.la>', // sender address
+                from: '"Not Reply LunarLoom" <lunarloom@example.com>', // sender address
                 to: user.email, // list of receivers
                 subject: "Password Reset", // Subject line
                 text: "Password Reset", // plain text body

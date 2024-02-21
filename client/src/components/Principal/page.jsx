@@ -1,17 +1,18 @@
 'use client'
-import { AppBar, Box, Button, Card, Fab, Grid, Toolbar, Typography, styled } from "@mui/material";
+import { getAll } from "@/app/api/route";
+import { AppBar, Box, Button, Card, Container, Divider, Fab, Grid, Toolbar, Typography, styled } from "@mui/material";
 import QueueIcon from '@mui/icons-material/Queue';
-import { Fragment } from "react";
-import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { Fragment, useEffect, useState } from "react";
+import { useAppSelector } from '@/lib/hooks';
 import { selectRol } from '@/lib/features/users/userSlice';
 import { useRouter } from "next/navigation";
-import tshirt from '/public/images/tshirt.jpg';
-import urban from '/public/images/Urban.jpg';
-import formal from '/public/images/Formal.jpg';
-import sport from '/public/images/Sport.jpg';
+import tshirt from '/public/images/tshirt.png';
 import styles from "./page.module.css";
 import Image from "next/image";
 import { Inter } from 'next/font/google';
+import Colection from "./newColection";
+import PopularProd from "./popularProducts";
+import Foot from "../Footer/page";
 const StyledFab = styled(Fab)({
     position: 'absolute',
     zIndex: 1,
@@ -25,28 +26,64 @@ const CustomFont = Inter({
     subsets: ['latin'],
     fontStyle: "normal"
 });
+
+
 const Principal = () => {
-    const dispatch = useAppDispatch();
+    const [product, setProduct] = useState([]);
     const rol = useAppSelector(selectRol);
-    console.log(rol);
     const router = useRouter();
+    console.log(rol);
+
+    const getProduct = async () => {
+        try {
+            const result = await getAll();
+            const limitResult = result.slice(0, 4)
+            setProduct(limitResult);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        getProduct();
+    }, []);
+
+    const [width, setWidth] = useState(window.innerWidth);
+    const [height, setHeight] = useState(window.innerHeight);
+
+    useEffect(() => {
+        window.addEventListener("resize", handleResize);
+
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+    }, []);
+
+    const handleResize = () => {
+        setWidth(window.innerWidth);
+        setHeight(window.innerHeight);
+    };
+    console.log(height);
+
+
     return (
         <Fragment>
-            <Grid container maxWidth="100vw" >
+            <Grid container maxWidth="100vw">
                 {
                     rol === 'admin' ?
-                        <AppBar position="fixed" color="transparent" sx={{ top: 'auto', bottom: 0, boxShadow: 'none' }}>
-                            <Toolbar sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                                <StyledFab color="secondary" aria-label="add" fullWidth variant="contained" sx={
-                                    {
-                                        height: '50px', width: { xs: '97%', sm: '97%', md: '200px' },
-                                        mb: 3,
-                                        borderRadius: '50px',
+                        <AppBar color="transparent" sx={{ top: 'auto', bottom: 0, width: '0px', left: { sm: '85%', xs: '75%' }, boxShadow: 'none', display: 'flex' }}>
+                            <Toolbar sx={{ display: 'flex', alignItems: 'flex-end' }}>
+                                <StyledFab aria-label="add" variant="contained" sx={{
+                                    p: 4,
+                                    height: '50px', width: { xs: '50px', sm: '50px', md: '50px' },
+                                    mb: 3,
+                                    color: 'white',
+                                    borderRadius: '50px',
+                                    backgroundColor: '#946FB5',
+                                    '&:hover': {
                                         backgroundColor: '#946FB5',
-                                        '&:hover': {
-                                            backgroundColor: '#946FB5',
-                                        },
-                                    }
+                                    },
+                                }
                                 }
                                     onClick={() => { router.push('/newPost') }}
                                 >
@@ -54,8 +91,8 @@ const Principal = () => {
                                 </StyledFab>
                                 <Box sx={{ flexGrow: 1 }} />
                             </Toolbar>
-                        </AppBar> : rol != 'user' || rol === '' ?
-                            null :
+                        </AppBar> : rol === 'user' || rol === ''  ?
+                            <Grid></Grid> :
                             null
                 }
                 <Grid container sx={{ height: '100vh', justifyContent: 'center', alignItems: 'center' }}>
@@ -81,7 +118,8 @@ const Principal = () => {
                             <Typography className={CustomFont.className} sx={{
                                 fontSize: { xs: 40, sm: 47, md: 50 },
                                 textAlign: 'initial',
-                                fontWeight: 'bolder'
+                                fontWeight: 'bolder',
+                                color: '#4b494d'
                             }}>
                                 EXPRESS YOUR STYLE!
                             </Typography>
@@ -117,123 +155,54 @@ const Principal = () => {
                         />
                     </Grid>
                 </Grid>
-                <Grid container sx={{
-                    height: '100vh',
-                    width: '100vw'
+                <Container sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center'
                 }}>
-                    <Grid item sx={{ width: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '20px' }}>
-                        <Typography
-                            sx={{ fontSize: { xs: 40, sm: 40, md: 70 }, textAlign: 'center' }}
-                        >
-                            New Colection
-                        </Typography>
-                        <Typography sx={{ textAlign: 'center' }}>
-                            Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                            Optio quod nulla cupiditate quaerat dignissimos veniam et earum.
-                        </Typography>
+                    <Grid item sx={{
+                        width: { md: '70%', sm: '50%', xs: "100%" },
+                        height: { md: '70%', sm: '50%', xs: "100%" },
+                        display: 'flex', flexDirection: 'column',
+                        justifyContent: 'center'
+                    }}>
                     </Grid>
-                    <Grid container spacing={3} sx={{ width: 1, display: 'flex', flexDirection:'row', justifyContent: 'center', alignItems:'center' }}>
-                        <Grid item xs={10} sm={10} md={3.5}>
-                            <Card sx={{ width: {xs:'80vw', sm:'80vw', md:'25vw'}, height: '60vh', textAlign: 'center' }}>
-                                <Grid item sx={{ height: '100%', width: '100%', position: "relative" }}>
-                                    <Image
-                                        className={styles.image}
-                                        src={urban}
-                                        alt="Image Background T-Shirt"
-                                    />
-                                    <Grid item sx={{
-                                        height: '100%',
-                                        width: '100%',
-                                        position: "absolute",
-                                        top: 0, left: 0,
-                                        display: 'flex', flexDirection: 'column',
-                                        justifyContent: 'flex-end', alignItems: 'center'
-                                    }}>
-                                        <Grid item sx={{
-                                            background: 'rgba(255, 255, 255, 0.4)',
-                                            backdropFilter: "blur(1px)",
-                                            p: 2
-                                        }}>
-                                            <Typography gutterBottom variant="h5" >
-                                                Urban Style
-                                            </Typography>
-                                            <Typography variant="body2" color="text.secondary">
-                                                Lizards are a widespread group of squamate reptiles, with over 6,000
-                                                species, ranging across all continents except Antarctica
-                                            </Typography>
-                                        </Grid>
-                                    </Grid>
-                                </Grid>
-                            </Card>
-                        </Grid>
-                        <Grid item xs={10} sm={10} md={3.5}>
-                            <Card sx={{width: {xs:'80vw', sm:'80vw', md:'25vw'}, height: '60vh', textAlign: 'center' }}>
-                                <Grid item sx={{ height: '100%', width: '100%', position: "relative" }}>
-                                    <Image
-                                        className={styles.image}
-                                        src={formal}
-                                        alt="Image Background T-Shirt"
-                                    />
-                                    <Grid item sx={{
-                                        height: '100%',
-                                        width: '100%',
-                                        position: "absolute",
-                                        top: 0, left: 0,
-                                        display: 'flex', flexDirection: 'column',
-                                        justifyContent: 'flex-end', alignItems: 'center'
-                                    }}>
-                                        <Grid item sx={{
-                                            background: 'rgba(255, 255, 255, 0.4)',
-                                            backdropFilter: "blur(1px)",
-                                            p: 2
-                                        }}>
-                                            <Typography gutterBottom variant="h5" >
-                                                Urban Style
-                                            </Typography>
-                                            <Typography variant="body2" color="text.secondary">
-                                                Lizards are a widespread group of squamate reptiles, with over 6,000
-                                                species, ranging across all continents except Antarctica
-                                            </Typography>
-                                        </Grid>
-                                    </Grid>
-                                </Grid>
-                            </Card>
-                        </Grid>
-                        <Grid item xs={10} sm={10} md={3.5}>
-                            <Card sx={{ width: {xs:'80vw', sm:'80vw', md:'25vw'}, height: '60vh', textAlign: 'center' }}>
-                                <Grid item sx={{ height: '100%', width: '100%', position: "relative" }}>
-                                    <Image
-                                        className={styles.image}
-                                        src={sport}
-                                        alt="Image Background T-Shirt"
-                                    />
-                                    <Grid item sx={{
-                                        height: '100%',
-                                        width: '100%',
-                                        position: "absolute",
-                                        top: 0, left: 0,
-                                        display: 'flex', flexDirection: 'column',
-                                        justifyContent: 'flex-end', alignItems: 'center'
-                                    }}>
-                                        <Grid item sx={{
-                                            background: 'rgba(255, 255, 255, 0.4)',
-                                            backdropFilter: "blur(1px)",
-                                            p: 2
-                                        }}>
-                                            <Typography gutterBottom variant="h5" >
-                                                Urban Style
-                                            </Typography>
-                                            <Typography variant="body2" color="text.secondary">
-                                                Lizards are a widespread group of squamate reptiles, with over 6,000
-                                                species, ranging across all continents except Antarctica
-                                            </Typography>
-                                        </Grid>
-                                    </Grid>
-                                </Grid>
-                            </Card>
-                        </Grid>
-                    </Grid>
+                    <Colection />
+                </Container>
+            </Grid>
+            <Grid>
+                <Divider variant="middle" sx={{ my: { xs: 10, sm: 10, lg: 0 }, mt: { xs: 10, lg: 15, md: 10 } }} />
+            </Grid>
+            <Grid item sx={{
+                display: 'flex',
+                width: '100%',
+                justifyContent: 'center',
+                flexDirection: 'column',
+                alignItems: 'center',
+                height: '100vh',
+
+            }}>
+                <Grid item sx={{ textAlign: 'center', mb: 6 }}>
+                    <Typography sx={{ fontWeight: 'bold', fontSize: { md: "30px" } }}>
+                        MOST POPULAR T-SHIRTS
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                        The most premium brand in your destination.
+                    </Typography>
                 </Grid>
+                <Grid container sx={{ width: "100%", justifyContent: 'center', height: { lg: '50%', md: "50%", xs: '90vh' } }}>
+                    {
+                        product.map((item, idx) => {
+                            return (
+                                <PopularProd product={item} key={idx} />
+                            )
+                        })
+                    }
+                </Grid>
+            </Grid>
+            <Grid item sx={{ mt: { lg: 0, md: 0, sm: 35, xs: height <= 667 ? 195 : 170 } }}>
+                <Foot />
             </Grid>
         </Fragment>
     )

@@ -6,6 +6,8 @@ import { Fragment, useState } from "react";
 import { usePostContext } from "../../app/context/PostContext";
 import styles from "../UserForm/page.module.css";
 import { newPost } from "@/app/api/route";
+import Swal from "sweetalert2";
+import Link from "next/link";
 
 const ProductForm = () => {
     const { downloadURLs } = usePostContext();
@@ -30,9 +32,21 @@ const ProductForm = () => {
             const result = await newPost(data);
             console.log(result);
             router.push("/");
+            Swal.fire({
+                toast: true,
+                icon: "success",
+                iconColor: "white",
+                position: "bottom",
+                color: "white",
+                title: "se ha subido el producto correctamente",
+                background: "#a5dc86",
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+            });
         } catch (error) {
             console.log(error);
-            const valErrors = error.response.data.error.errors;
+            const valErrors = error.response.data.message.errors;
             setErrors({
                 title: valErrors.title?.message ? valErrors.title.message : "",
                 description: valErrors.description?.message ? valErrors.description.message : "",
@@ -254,6 +268,13 @@ const ProductForm = () => {
                                         >
                                             Publicar
                                         </Button>
+                                    </Grid>
+                                    <Grid item sx={{width:'100%',display:'flex', justifyContent:'flex-end'}}>
+                                        <Link href={'/'} color="white" style={{
+                                            textDecoration: 'none',
+                                            color: 'white',
+                                            fontSize: 20,
+                                        }}>Volver a Inicio</Link>
                                     </Grid>
                                 </Grid>
                             </Box>

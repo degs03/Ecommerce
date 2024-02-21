@@ -100,7 +100,7 @@ module.exports.login = async (req, res) => {
             firstName: user.firstName,
             lastName: user.lastName,
             rol: user.rol
-        }, secretKey, { expiresIn: "10m" });
+        }, secretKey, { expiresIn: "60m" });
         res.cookie("userToken", newJWT, secretKey, { httpOnly: true });
         res.status(200);
         const rsUser = {

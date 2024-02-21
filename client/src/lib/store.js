@@ -27,6 +27,7 @@ const userPersistConfig = {
     key: 'user',
     storage: storage,
 }
+
 const cartPersistConfig = {
     key: 'cart',
     storage: storage,

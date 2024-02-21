@@ -68,3 +68,23 @@ export function getAll(params = {}) {
         }
     });
 }
+
+
+
+//--------------DELETE PRODUCT---------------------------------------------------->
+
+
+export function Delete(productId) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const response = await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/post/${productId}`);
+            const result = await response.data;
+            resolve(result);
+        } catch (error) {
+            console.log(error);
+            reject(error);
+        }
+    });
+}
+
+

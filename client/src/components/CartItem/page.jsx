@@ -24,7 +24,7 @@ const CartItem = ({ cartItem }) => {
         dispatch(decrementQty(cartId));
     }
     return (
-        <Card container sx={{ display: 'flex', justifyContent: 'space-between', mt:2 }}>
+        <Card container sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
             <Box sx={{ display: 'flex', flexDirection: 'column', width: '50%' }}>
                 <CardContent sx={{ display: 'flex', width: 1, justifyContent: 'space-between' }}>
                     <Grid item>
@@ -37,20 +37,20 @@ const CartItem = ({ cartItem }) => {
                     </Grid>
                     <Grid item>
                         <IconButton onClick={(e) => { e.preventDefault(); handleItemDelete(cartItem._id); }}>
-                            <DeleteOutlineOutlinedIcon sx={{color:'#FB88B4'}}/>
+                            <DeleteOutlineOutlinedIcon sx={{ color: '#FB88B4' }} />
                         </IconButton>
                     </Grid>
                 </CardContent>
                 <CardContent>
-                    <Grid item sx={{ display: 'flex', width: 1, alignItems: 'center', justifyContent: 'space-between', ml:4 }}>
-                        <IconButton >
-                            <DoDisturbOnOutlinedIcon onClick={(e) => { e.preventDefault(); handleQtyDecrement(cartItem._id); }}/>
+                    <Grid item sx={{ display: 'flex', width: 1, alignItems: 'center', justifyContent: 'space-between', ml: 4 }}>
+                        <IconButton onClick={(e) => { e.preventDefault(); handleQtyDecrement(cartItem._id); }}>
+                            <DoDisturbOnOutlinedIcon />
                         </IconButton>
                         <Typography>
                             {cartItem.qty}
                         </Typography>
-                        <IconButton >
-                            <AddCircleOutlineIcon onClick={(e) => { e.preventDefault(); handleQtyIncrement(cartItem._id); }}/>
+                        <IconButton onClick={(e) => { e.preventDefault(); handleQtyIncrement(cartItem._id); }} >
+                            <AddCircleOutlineIcon />
                         </IconButton>
                     </Grid>
                 </CardContent>
@@ -59,8 +59,8 @@ const CartItem = ({ cartItem }) => {
                 <CardMedia
                     component="img"
                     sx={{ width: 151 }}
-                    src={cartItem.image}
-                    alt="Live from space album cover"
+                    src={`${cartItem.image}`}
+                    alt="Item cover"
                 />
             </Box>
         </Card>

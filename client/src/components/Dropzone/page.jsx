@@ -1,16 +1,16 @@
 "use client"
-import { Fragment, useCallback, useEffect, useState } from 'react';
+import { Fragment, useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import styles from './page.module.css';
 import { db, storage } from '@/firebase/config';
 import { addDoc, collection, serverTimestamp, updateDoc, doc, arrayUnion } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import { Button, Grid, LinearProgress, TextField, Typography } from '@mui/material';
+import { Button, Grid, TextField, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { usePostContext } from '../../app/context/PostContext';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import ImageIcon from '@mui/icons-material/Image';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import Swal from 'sweetalert2';
 
 const Dropzone = ({ onFilesUploaded }) => {
     const [files, setFiles] = useState([]);
@@ -25,6 +25,18 @@ const Dropzone = ({ onFilesUploaded }) => {
             files.map(async image => {
                 const imageRef = ref(storage, `post/${docRef.id}/${image.path}`);
                 await uploadBytes(imageRef, image, "data_url");
+                Swal.fire({
+                    toast: true,
+                    icon: "success",
+                    iconColor: "white",
+                    position: "bottom",
+                    color: "white",
+                    title: "se ha subido la imagen correctamente",
+                    background: "#a5dc86",
+                    showConfirmButton: false,
+                    timer: 2000,
+                    timerProgressBar: true,
+                });
                 const downloadURL = await getDownloadURL(imageRef);
                 await updateDoc(doc(db, "post", docRef.id), {
                     images: arrayUnion(downloadURL)
@@ -78,13 +90,15 @@ const Dropzone = ({ onFilesUploaded }) => {
                         justifyContent: 'space-between',
                         my: 0.3,
                         p: 1,
+                        overflow: 'hidden',
                         border: "1px solid",
                         borderRadius: '50px',
                         color: 'white'
                     }}>
-                        <Typography sx={{ color: "white", display: 'flex' }}><ImageIcon size="small" />{file.name}</Typography>
+                        <Typography sx={{ color: "white", display: 'flex' }} ><ImageIcon size="small" />ImageFile{[idx]}</Typography>
                         <DeleteIcon size='small' sx={{ color: "white" }} onClick={() => handleDeleteFile(file)} />
                     </Grid>
+
                 ))}
             </Grid>
             <Grid container sx={{ justifyContent: 'center' }}>
